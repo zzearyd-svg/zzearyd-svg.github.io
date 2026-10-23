@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-theme="midnight">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arcadia</title>
+<link rel="icon" id="fav" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎮%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bg"><i></i><i></i><i></i></div>
+<header>
+  <b class="logo" id="logo">arcadia</b>
+  <nav id="nav">
+    <button data-p="games" class="on">Games</button>
+    <button data-p="corner">Claude’s Corner</button>
+    <button data-p="settings">Settings</button>
+  </nav>
+</header>
+<main id="view"></main>
+<div id="player" hidden>
+  <div class="bar"><b id="pt"></b><span><button id="ph">Hide bar</button><button id="po" hidden>Open in new tab</button><button id="pf">Fullscreen</button><button id="px">Close</button></span></div>
+  <div id="stage"></div>
+  <button id="ps">▾ Show bar</button>
+</div>
+<canvas id="sparks"></canvas>
+<script src="games.js"></script>
+<script src="catalog.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

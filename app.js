@@ -25,29 +25,41 @@ function go(p){document.querySelectorAll('#nav button').forEach(b=>b.classList.t
 const CLID='p_27841169-43c3-4a47-aacd-af9abd43a2a3',IMG='https://static.playgama.com/p-img/pg/',
 PG=typeof CAT!='undefined'?CAT.map(c=>({id:'pg:'+c[0],name:c[1],e:'🎮',g:c[3],d:c[3].split(',').slice(0,2).map(s=>s.replace(/-/g,' ')).join(' · '),img:c[2]?IMG+c[2]+'?width=448':'',m:c[4],url:c[5]||'https://playgama.com/export/game/'+c[0]+'?clid='+CLID})):[];
 const GC={};PG.forEach(g=>g.g.split(',').forEach(x=>x&&(GC[x]=(GC[x]||0)+1)));
-const CHIPS=Object.keys(GC).sort((a,b)=>GC[b]-GC[a]).slice(0,24),PER=()=>+S.per||120;
+const CHIPS=Object.keys(GC).filter(x=>x!='mobile').sort((a,b)=>GC[b]-GC[a]).slice(0,24),PER=()=>+S.per||120;
 let chip='All',shown=PER();
 
-function games(){const v=$('#view');clearInterval(RT);
-v.innerHTML=`<section class="hero"><h1>${S.discreet?'Files':'Play <span class="rot" id="rot"></span>'}</h1><p class="sub"><b id="cnt">0</b> games ready<button class="surp" id="sur">🎲 Surprise me</button></p></section><div class="row top"><input id="q" placeholder="Search games (press / )" autocomplete="off"><select id="so">${[['pop','Popular'],['az','A to Z'],['za','Z to A'],['shuf','Shuffle']].map(o=>`<option value="${o[0]}"${S.sort==o[0]?' selected':''}>${o[1]}</option>`).join('')}</select></div><div class="chips">${['All','Favorites','Recent','Mobile','Classics',...CHIPS].map(c=>`<button class="${c==chip?'on':''}">${c}</button>`).join('')}</div><section id="cw" hidden><h2 class="sh">Continue playing</h2><div class="strip" id="st"></div></section><div class="grid" id="g"></div><button class="btn" id="more">Show more</button>`;
-const all=[...S.custom.map(c=>({id:c.url,name:c.name,e:'🌐',d:'Custom game',url:c.url})),...PG,...GAMES],rk=new Map(all.map(g=>[g.id,Math.random()]));
+let IO;
+function games(){const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
+const CH=[['All','All'],['Favorites','♥ Favorites'],['Recent','🕒 Recent'],['Mobile','📱 Phone-ready'],['Classics','Classics'],...CHIPS.map(x=>[x,x.replace(/-/g,' ')])];
+v.innerHTML=`<section class="hero"><h1>${S.discreet?'Files':'Play <span class="rot" id="rot"></span>'}</h1><p class="sub"><b id="cnt">0</b> games ready<button class="surp" id="sur">🎲 Surprise me</button></p></section><div class="row top"><input id="q" placeholder="Search games (press / )" autocomplete="off"><select id="so">${[['pop','Popular'],['az','A to Z'],['za','Z to A'],['shuf','Shuffle']].map(o=>`<option value="${o[0]}"${S.sort==o[0]?' selected':''}>${o[1]}</option>`).join('')}</select></div><div class="chips">${CH.map(c=>`<button data-c="${c[0]}" class="${c[0]==chip?'on':''}">${c[1]}</button>`).join('')}</div><section id="cw" hidden><h2 class="sh">Continue playing</h2><div class="strip" id="st"></div></section><p class="rc" id="rc"></p><div class="grid" id="g"></div><button class="btn" id="more">Show more</button>`;
+const all=[...S.custom.map(c=>({id:c.url,name:c.name,e:'🌐',d:'Custom game',url:c.url})),...PG,...GAMES],rk=new Map(all.map(g=>[g.id,Math.random()])),real=all.filter(g=>!g.ext);
 if($('#rot'))RT=S.calm?($('#rot').textContent='games',0):rotText($('#rot'),['puzzles','racers','shooters','idle games','arcade hits','3D worlds'],2200);
-countUp($('#cnt'),all.length);
-$('#sur').onclick=()=>{const p=all.filter(g=>!g.ext);play(p[Math.random()*p.length|0])};
+countUp($('#cnt'),real.length);
+let list=[],rendered=0;
 const ok=g=>!(S.mobonly&&g.id.startsWith('pg:')&&!g.m)&&(chip=='All'||(chip=='Favorites'?S.fav.includes(g.id):chip=='Recent'?S.recent.includes(g.id):chip=='Mobile'?!!g.m:chip=='Classics'?!g.id.startsWith('pg:'):(g.g||'').split(',').includes(chip)));
-const card=g=>{const a=mk('button','card',`<span class="thumb">${g.e}${g.img&&S.thumbs?`<img src="${esc(g.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:''}</span>${g.ext?'':`<span class="hrt${S.fav.includes(g.id)?' on':''}">♥</span>`}<b>${esc(g.name)}</b><small>${esc(g.d)}</small>`);
+const card=g=>{const pg=g.id.startsWith('pg:'),tag=pg?(g.g.split(',')[0]||'').replace(/-/g,' '):g.ext?'Link':g.d=='Custom game'?'Custom':'Classic',
+img=g.img&&S.thumbs?`<img src="${esc(g.img)}" data-e="${g.e}" alt="" loading="lazy" referrerpolicy="no-referrer" onload="this.classList.add('ok')" onerror="this.replaceWith(this.dataset.e)">`:g.e;
+const a=mk('button','card'+(pg?'':' cl'),`<span class="thumb">${img}${tag?`<i class="tag">${esc(tag)}</i>`:''}</span>${g.ext?'':`<span class="hrt${S.fav.includes(g.id)?' on':''}">♥</span>`}<b>${esc(g.name)}</b><small>${esc(g.d)}</small>`);
 a.onclick=e=>{if(e.target.classList.contains('hrt'))return toggleFav(g.id,e.target);g.ext?open(g.url,'_blank','noopener'):play(g)};fx(a);return a};
-const draw=()=>{const q=$('#q').value.toLowerCase().trim(),list=all.filter(g=>g.name.toLowerCase().includes(q)&&ok(g));
+const more=()=>{const g=$('#g');list.slice(rendered,shown).forEach(x=>g.append(card(x)));rendered=Math.min(shown,list.length);$('#more').hidden=rendered>=list.length;$('#more').textContent='Show more ('+(list.length-rendered)+' left)'};
+const fill=()=>{while(!$('#more').hidden&&$('#more').getBoundingClientRect().top<innerHeight+800){shown+=PER();more()}};
+const build=()=>{const q=$('#q').value.toLowerCase().trim();list=all.filter(g=>g.name.toLowerCase().includes(q)&&ok(g));
 if(chip=='Recent')list.sort((x,y)=>S.recent.indexOf(x.id)-S.recent.indexOf(y.id));
 else if(S.sort=='az')list.sort((x,y)=>x.name.localeCompare(y.name));else if(S.sort=='za')list.sort((x,y)=>y.name.localeCompare(x.name));else if(S.sort=='shuf')list.sort((x,y)=>rk.get(x.id)-rk.get(y.id));
 const rec=S.cont&&chip=='All'&&!q?S.recent.map(id=>all.find(g=>g.id==id)).filter(Boolean).slice(0,8):[];
 $('#cw').hidden=!rec.length;$('#st').innerHTML='';rec.forEach(g=>$('#st').append(card(g)));
-$('#g').innerHTML=list.length?'':'<small>'+(chip=='Favorites'?'No favorites yet. Tap the ♥ on a game.':chip=='Recent'?'Games you play will show up here.':'No games found.')+'</small>';
-list.slice(0,shown).forEach(g=>$('#g').append(card(g)));
-$('#more').hidden=list.length<=shown;$('#more').textContent='Show more ('+(list.length-shown)+' left)'};
-v.querySelector('.chips').onclick=e=>{if(e.target.tagName=='BUTTON'){chip=e.target.textContent;shown=PER();v.querySelectorAll('.chips button').forEach(b=>b.classList.toggle('on',b.textContent==chip));draw()}};
-$('#so').onchange=()=>{S.sort=$('#so').value;save();shown=PER();draw()};
-$('#q').oninput=()=>{shown=PER();draw()};$('#more').onclick=()=>{shown+=PER();draw()};draw()}
+const lab=((CH.find(c=>c[0]==chip)||[0,chip])[1]).replace(/^[^a-z0-9]+/i,'');
+$('#rc').innerHTML=chip!='All'||q?`${list.length.toLocaleString()} games${chip!='All'?' in '+esc(lab):''}${q?' matching “'+esc(q)+'”':''}<button id="clr">Clear</button>`:'';
+rendered=0;$('#g').innerHTML=list.length?'':'<small>'+(chip=='Favorites'?'No favorites yet. Tap the ♥ on a game.':chip=='Recent'?'Games you play will show up here.':'No games found.')+'</small>';more()};
+const sync=()=>v.querySelectorAll('.chips button').forEach(b=>b.classList.toggle('on',b.dataset.c==chip));
+$('#sur').onclick=()=>{const p=(list.length?list:all).filter(g=>!g.ext);play(p[Math.random()*p.length|0])};
+v.querySelector('.chips').onclick=e=>{const b=e.target.closest('button');if(!b)return;chip=b.dataset.c;shown=PER();sync();b.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});build()};
+$('#rc').onclick=e=>{if(e.target.id=='clr'){chip='All';$('#q').value='';shown=PER();sync();build()}};
+$('#so').onchange=()=>{S.sort=$('#so').value;save();shown=PER();build()};
+$('#q').oninput=()=>{shown=PER();build()};
+$('#more').onclick=()=>{shown+=PER();more()};
+IO=new IntersectionObserver(es=>{if(es[0].isIntersecting)fill()},{rootMargin:'800px'});IO.observe($('#more'));
+shown=PER();build()}
 function play(g){const st=$('#stage');$('#player').hidden=false;$('#player').classList.remove('min');startEarn();startSession(g);$('#pt').textContent=g.name;if(!g.ext){S.recent=[g.id,...S.recent.filter(x=>x!=g.id)].slice(0,12);save()}$('#pl').onclick=()=>{const u=location.href.split('#')[0]+'#'+encodeURIComponent(g.id);navigator.clipboard&&navigator.clipboard.writeText(u);$('#pl').textContent='Copied!';setTimeout(()=>$('#pl').textContent='Copy link',1500)};st.innerHTML='';
 $('#po').hidden=!g.url;$('#po').onclick=()=>open(g.url,'_blank','noopener');
 if(g.url){const f=mk('iframe');f.src=g.url;f.allow='fullscreen;autoplay;gamepad;accelerometer;gyroscope;clipboard-write;encrypted-media;picture-in-picture';f.setAttribute('sandbox','allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals allow-popups-to-escape-sandbox allow-presentation allow-orientation-lock');st.append(f)}
@@ -97,7 +109,7 @@ S.custom=(Array.isArray(S.custom)?S.custom:[]).filter(x=>x&&typeof x.name=='stri
 save();apply();settings();toast('Backup restored')}catch(e){toast('That backup code didn’t work')}};
 $('#cr').onclick=()=>{S.recent=[];save();toast('Recent games cleared')};$('#cf').onclick=()=>{S.fav=[];save();toast('Favorites cleared')};
 $('#rs').onclick=()=>{if(confirm('Reset all settings, favorites and your sign-in on this device?')){try{['nd','nd_terms','nd_key','nd_tok'].forEach(k=>localStorage.removeItem(k));sessionStorage.removeItem('nd_tok')}catch(e){}location.reload()}}}
-const API='https://nullden.zzearyd.workers.dev';  /* paste your relay URL here, no trailing slash (see worker.js) */
+const API='';  /* paste your relay URL here, no trailing slash (see worker.js) */
 /* React Bits style effects, in plain JS */
 let RT;
 function rotText(el,w,ms){let i=0;const t=()=>{el.textContent=w[i++%w.length];el.classList.remove('in');void el.offsetWidth;el.classList.add('in')};t();return setInterval(t,ms)}
@@ -176,6 +188,7 @@ loadStatus();setInterval(loadStatus,300000);
 let TI,WL,PT0,DEF;
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();DEF=e});
 const pb=mk('button','','✕');pb.id='panic';pb.title='Panic: leave this page';pb.hidden=true;pb.onclick=()=>location.replace(S.panic);document.body.append(pb);
+const tb=mk('button','','↑');tb.id='top';tb.title='Back to top';tb.onclick=()=>scrollTo({top:0,behavior:S.calm?'auto':'smooth'});document.body.append(tb);addEventListener('scroll',()=>tb.classList.toggle('on',scrollY>900),{passive:true});
 function startSession(g){S.plays[g.id]=(S.plays[g.id]||0)+1;PT0=Date.now();clearInterval(TI);if(ME&&!g.ext)api('/played',{id:g.id,name:g.name}).catch(()=>{});
 TI=setInterval(()=>{const s=(Date.now()-PT0)/1000|0;$('#ptm').textContent=(s/60|0)+':'+String(s%60).padStart(2,'0');if(document.visibilityState=='visible'&&!(++S.time%15))save()},1000);
 $('#pr').hidden=!g.url;$('#pr').onclick=()=>{const f=$('#stage iframe');if(f&&g.url)f.src=g.url};

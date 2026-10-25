@@ -308,13 +308,12 @@ try{sessionStorage.removeItem('nd_gm')}catch(e){}
 let FCH='general',FT,FLAST='';
 const ALL=()=>[...S.custom.map(c=>({id:c.url,name:c.name,i:'globe',d:'Custom game',url:c.url})),...PG,...GAMES],
 cap=s=>s.replace(/-/g,' ').replace(/^./,c=>c.toUpperCase());
-function fillHome(){if(!$('#r1'))return;const a=ALL().filter(g=>!g.ext),pg=a.filter(g=>g.id.startsWith('pg:')),cl=a.filter(g=>!g.id.startsWith('pg:')&&g.d!='Custom game');
-const pop=[],L=[pg,cl];for(let i=0;pop.length<30&&i<40;i++)L.forEach(l=>l[i]&&pop.length<30&&pop.push(l[i]));
+function fillHome(){if(!$('#r1'))return;const a=ALL().filter(g=>!g.ext),pg=a.filter(g=>g.id.startsWith('pg:'));
+const pop=[],L=[pg.length?pg:a];for(let i=0;pop.length<30&&i<40;i++)L.forEach(l=>l[i]&&pop.length<30&&pop.push(l[i]));
 const rec=S.cont?S.recent.map(id=>a.find(g=>g.id==id)).filter(Boolean):[],R=[['Popular',pop,'All',1,a.length]];
 if(rec.length)R.push(['Continue playing',rec.slice(0,20),'Recent',0,rec.length]);
 const gc={};a.forEach(g=>(g.g||'').split(',').forEach(x=>x&&x!='mobile'&&(gc[x]=(gc[x]||0)+1)));
 const gl=Object.keys(gc).filter(x=>gc[x]>=10).sort((x,y)=>gc[y]-gc[x]);gl.slice(0,10).forEach(x=>{const l=a.filter(g=>(g.g||'').split(',').includes(x));R.push([cap(x),l.slice(0,30),x,0,l.length])});
-if(cl.length)R.push(['Classics',cl,'Classics',0,cl.length]);
 $('#cnt').textContent=a.length.toLocaleString();
 const rt=$('#rot');if(rt&&gl.length){clearInterval(RT);const w=gl.slice(0,12);let i=Math.random()*w.length|0;
 const t=()=>{if(!document.body.contains(rt))return clearInterval(RT);const x=w[i++%w.length];rt.textContent=cap(x);rt.dataset.c=x;rt.classList.remove('in');void rt.offsetWidth;rt.classList.add('in')};

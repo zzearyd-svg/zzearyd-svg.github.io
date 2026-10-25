@@ -314,7 +314,7 @@ async function loadGM(){try{const c=JSON.parse(sessionStorage.nd_gm||'null');if(
 let d;try{d=await(await fetch(GMURL)).json()}catch(e){try{d=await api('/feed?page=1',0,0)}catch(x){return}}
 GM=gmMap(d);try{sessionStorage.nd_gm=JSON.stringify({t:Date.now(),d})}catch(e){}}
 const GMP=loadGM();
-function gmVideo(){const f=$('#gmv');if(!f)return;f.srcdoc='<!doctype html><body style="margin:0;background:#000"><div id="gamemonetize-video"></div><script>window.VIDEO_OPTIONS={gameid:"4kci7og3klgj0ivy2wz3gdvd9dth5e7n",width:"100%",height:"480px",color:"#3f007e",getAds:"false"};(function(a,b,c){var d=a.getElementsByTagName(b)[0];a.getElementById(c)||(a=a.createElement(b),a.id=c,a.src="https://api.gamemonetize.com/video.js",d.parentNode.insertBefore(a,d))})(document,"script","gamemonetize-video-api");<\/script>'}
+function gmVideo(){const f=$('');if(!f)return;f.srcdoc='<!doctype html><body style="margin:0;background:#000"><div id="gamemonetize-video"></div><script>window.VIDEO_OPTIONS={gameid:"4kci7og3klgj0ivy2wz3gdvd9dth5e7n",width:"100%",height:"480px",color:"#3f007e",getAds:"false"};(function(a,b,c){var d=a.getElementsByTagName(b)[0];a.getElementById(c)||(a=a.createElement(b),a.id=c,a.src="https://api.gamemonetize.com/video.js",d.parentNode.insertBefore(a,d))})(document,"script","gamemonetize-video-api");<\/script>'}
 function fillHome(){if(!$('#r1'))return;const a=ALL().filter(g=>!g.ext),pg=a.filter(g=>g.id.startsWith('pg:')),gm=a.filter(g=>g.id.startsWith('gm:')),cl=a.filter(g=>!/^(pg|gm):/.test(g.id)&&g.d!='Custom game');
 const pop=[],L=[pg,gm,cl];for(let i=0;pop.length<30&&i<40;i++)L.forEach(l=>l[i]&&pop.length<30&&pop.push(l[i]));
 const rec=S.cont?S.recent.map(id=>a.find(g=>g.id==id)).filter(Boolean):[],R=[['Popular',pop,'All',1,a.length]];

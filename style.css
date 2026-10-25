@@ -401,3 +401,17 @@ body,header,.panel,nav,#bux,.gcard{transition:background-color .4s,border-color 
 .fcomp :disabled{opacity:.5;cursor:not-allowed}
 @media(max-width:760px){.forum{grid-template-columns:1fr}.fch{flex-direction:row;overflow-x:auto;position:static}.fch button{flex:none}.fch small{display:none}}
 
+
+/* home: rotating genre word and genre sidebar */
+button.rot{border:0;padding:0;font:inherit;cursor:pointer;text-align:left}
+button.rot:hover{text-decoration:underline;text-decoration-color:var(--a);text-underline-offset:6px}
+.hl{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:28px;align-items:start}
+.hm{min-width:0}
+.gs{position:sticky;top:84px}
+.gs .sh{font-size:15px;margin:0 0 10px}
+.gl{display:flex;flex-direction:column;gap:2px;max-height:calc(100dvh - 150px);overflow-y:auto;scrollbar-width:thin;padding-right:4px}
+.gl button{display:flex;justify-content:space-between;align-items:center;gap:8px;background:none;border:0;border-radius:10px;padding:9px 12px;cursor:pointer;text-align:left;color:var(--mu)}
+.gl button:hover{background:var(--card);color:var(--tx)}
+.gl small{font-size:12px;font-variant-numeric:tabular-nums}
+.d .gs{display:none}.d .hl{grid-template-columns:minmax(0,1fr)}
+@media(max-width:900px){.hl{grid-template-columns:minmax(0,1fr)}.gs{position:static;order:-1;margin-bottom:18px}.gs .sh{display:none}.gl{flex-direction:row;max-height:none;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:0}.gl button{flex:none;white-space:nowrap;border:1px solid var(--ln);background:var(--card);border-radius:99px;padding:6px 14px}.gl small{display:none}}

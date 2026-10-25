@@ -314,8 +314,7 @@ async function loadGM(){try{const c=JSON.parse(sessionStorage.nd_gm||'null');if(
 let d;try{d=await(await fetch(GMURL)).json()}catch(e){try{d=await api('/feed?page=1',0,0)}catch(x){return}}
 GM=gmMap(d);try{sessionStorage.nd_gm=JSON.stringify({t:Date.now(),d})}catch(e){}}
 const GMP=loadGM();
-function gmVideo(){window.VIDEO_OPTIONS={gameid:'4kci7og3klgj0ivy2wz3gdvd9dth5e7n',width:'100%',height:'480px',color:'#3f007e',getAds:'false'};
-const o=document.getElementById('gamemonetize-video-api');o&&o.remove();const s=document.createElement('script');s.id='gamemonetize-video-api';s.src='https://api.gamemonetize.com/video.js';document.head.append(s)}
+function gmVideo(){const f=$('#gmv');if(!f)return;f.srcdoc='<!doctype html><body style="margin:0;background:#000"><div id="gamemonetize-video"></div><script>window.VIDEO_OPTIONS={gameid:"4kci7og3klgj0ivy2wz3gdvd9dth5e7n",width:"100%",height:"480px",color:"#3f007e",getAds:"false"};(function(a,b,c){var d=a.getElementsByTagName(b)[0];a.getElementById(c)||(a=a.createElement(b),a.id=c,a.src="https://api.gamemonetize.com/video.js",d.parentNode.insertBefore(a,d))})(document,"script","gamemonetize-video-api");<\/script>'}
 function fillHome(){if(!$('#r1'))return;const a=ALL().filter(g=>!g.ext),pg=a.filter(g=>g.id.startsWith('pg:')),gm=a.filter(g=>g.id.startsWith('gm:')),cl=a.filter(g=>!/^(pg|gm):/.test(g.id)&&g.d!='Custom game');
 const pop=[],L=[pg,gm,cl];for(let i=0;pop.length<30&&i<40;i++)L.forEach(l=>l[i]&&pop.length<30&&pop.push(l[i]));
 const rec=S.cont?S.recent.map(id=>a.find(g=>g.id==id)).filter(Boolean):[],R=[['Popular',pop,'All',1,a.length]];
@@ -330,7 +329,7 @@ r[1].forEach(g=>rl.append(card(g)));s.querySelector('.va').onclick=()=>{chip=r[2
 ab[0].onclick=()=>rl.scrollBy({left:-rl.clientWidth*.8,behavior:'smooth'});ab[1].onclick=()=>rl.scrollBy({left:rl.clientWidth*.8,behavior:'smooth'});el.append(s)})};
 put($('#r1'),R.slice(0,2));put($('#r2'),R.slice(2))}
 function home(){chip='All';const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
-v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="Search games (press / )" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><div id="r1"></div><section class="vid panel"><div class="vh"><h2 class="sh">Watch before you play</h2><small>Game walkthroughs from GameMonetize</small></div><div id="gamemonetize-video"></div></section><div id="r2"></div>`;
+v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="Search games (press / )" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><div id="r1"></div><section class="vid panel"><div class="vh"><h2 class="sh">Watch before you play</h2><small>Game walkthroughs from GameMonetize</small></div><iframe id="gmv" title="Game walkthroughs" sandbox="allow-scripts allow-popups allow-presentation allow-forms" allow="fullscreen;autoplay" loading="lazy"></iframe></section><div id="r2"></div>`;
 $('#q').oninput=e=>{if(e.target.value.trim())games('All',e.target.value)};
 $('#sur').onclick=()=>{const p=ALL().filter(g=>!g.ext);play(p[Math.random()*p.length|0])};
 fillHome();gmVideo();GMP.then(fillHome)}

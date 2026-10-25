@@ -151,7 +151,7 @@ S.custom=(Array.isArray(S.custom)?S.custom:[]).filter(x=>x&&typeof x.name=='stri
 save();apply();settings();toast('Backup restored')}catch(e){toast('That backup code didn’t work')}};
 $('#cr').onclick=()=>{S.recent=[];save();toast('Recent games cleared')};$('#cf').onclick=()=>{S.fav=[];save();toast('Favorites cleared')};
 $('#rs').onclick=()=>{if(confirm('Reset all settings, favorites and your sign-in on this device?')){try{['nd','nd_terms','nd_key','nd_tok'].forEach(k=>localStorage.removeItem(k));sessionStorage.removeItem('nd_tok')}catch(e){}location.reload()}}}
-const API='https://nullden.zzearyd.workers.dev/';  /* paste your relay URL here, no trailing slash (see worker.js) */
+const API='https://nullden.zzearyd.workers.dev';  /* paste your relay URL here, no trailing slash (see worker.js) */
 /* React Bits style effects, in plain JS */
 let RT;
 function rotText(el,w,ms){let i=0;const t=()=>{el.textContent=w[i++%w.length];el.classList.remove('in');void el.offsetWidth;el.classList.add('in')};t();return setInterval(t,ms)}

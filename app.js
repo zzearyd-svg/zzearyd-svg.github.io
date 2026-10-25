@@ -4,11 +4,12 @@ mk=(t,c,h)=>{const e=document.createElement(t);e.className=c||'';e.innerHTML=h||
 TH={midnight:['#8b6bff','#2fd6f5'],neon:['#ff2bd6','#00ffa3'],sunset:['#ff6b4a','#ffc14a'],forest:['#34d399','#a3e635'],light:['#5b6cff','#00b4d8'],nebula:['#a855f7','#ec4899'],matrix:['#00c853','#39ff7a'],synth:['#ff2a6d','#05d9e8'],ember:['#ff6a00','#ffd000']},THBG={nebula:'galaxy',matrix:'matrix',synth:'dots',ember:'particles'},
 CL={Documents:['Documents','doc'],Classes:['My Classes','grad'],Notes:['Notes','pencil'],Calculator:['Calculator','calc']},
 FORT=['You will beat your high score. Eventually. Probably.','A snack break is in your near future.','The gap in the pipes is bigger than it looks.','Someone is about to message you back.','Today’s lucky number is 2048.','Take a deep breath. Then take another turn.'];
-let S={theme:'midnight',discreet:false,cloak:'Documents',panic:'https://docs.google.com',fx:true,custom:[],best:{},fav:[],recent:[],thumbs:true,cont:true,calm:false,size:'normal',text:'normal',per:'120',sort:'pop',mobonly:false,autobar:false,awake:false,pkey:'`',pbtn:false,ctitle:'',ca:'#8b6bff',cb:'#2fd6f5',time:0,plays:{},bg:'aurora'},stop;
+let S={theme:'midnight',discreet:false,cloak:'Documents',panic:'https://docs.google.com',fx:false,custom:[],best:{},fav:[],recent:[],thumbs:true,cont:true,calm:false,size:'normal',text:'normal',per:'120',sort:'pop',mobonly:false,autobar:false,awake:false,pkey:'`',pbtn:false,ctitle:'',ca:'#8b6bff',cb:'#2fd6f5',time:0,plays:{},bg:'aurora'},stop;
 try{Object.assign(S,JSON.parse(localStorage.nd))}catch(e){}
 const save=()=>{try{localStorage.nd=JSON.stringify(S)}catch(e){}};
 
 const IC={
+chat:'<path d="M4 5.5h16v11H12l-4.5 3.5v-3.5H4z"/><path d="M8 10h8M8 13h5"/>',chevl:'<path d="M14.5 6l-6 6 6 6"/>',chevr:'<path d="M9.5 6l6 6-6 6"/>',
 gamepad:'<rect x="2" y="7" width="20" height="11" rx="5.5"/><path d="M7 10.5v4M5 12.5h4"/><path d="M16 11.5h.01M18.5 14h.01"/>',
 bag:'<path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
 users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17.5 14.5c2.8 0 4.5 1.6 4.5 4.5"/>',
@@ -62,7 +63,7 @@ c.style.setProperty('--x',x+'px');c.style.setProperty('--y',y+'px');
 if(!H.classList.contains('nofx'))c.style.transform=`perspective(600px) rotateX(${(y/r.height-.5)*-8}deg) rotateY(${(x/r.width-.5)*8}deg) translateY(-3px)`};
 c.onmouseleave=()=>c.style.transform=''}
 
-function go(p){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==p));({games,corner,settings,shop,account,players,admin,appeals})[p]();const vw=$('#view');vw.classList.remove('vin');void vw.offsetWidth;vw.classList.add('vin');const h=$('#view h1');if(h&&!h.children.length&&!H.classList.contains('nofx')&&!H.classList.contains('calm'))blurIn(h)}
+function go(p){clearInterval(FT);document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==p));({games:home,forum,corner,settings,shop,account,players,admin,appeals})[p]();const vw=$('#view');vw.classList.remove('vin');void vw.offsetWidth;vw.classList.add('vin');const h=$('#view h1');if(h&&!h.children.length&&!H.classList.contains('nofx')&&!H.classList.contains('calm'))blurIn(h)}
 
 const CLID='p_27841169-43c3-4a47-aacd-af9abd43a2a3',IMG='https://static.playgama.com/p-img/pg/',
 PG=typeof CAT!='undefined'?CAT.map(c=>({id:'pg:'+c[0],name:c[1],g:c[3],d:c[3].split(',').slice(0,2).map(s=>s.replace(/-/g,' ')).join(' · '),img:c[2]?IMG+c[2]+'?width=448':'',m:c[4],url:c[5]||'https://playgama.com/export/game/'+c[0]+'?clid='+CLID})):[];
@@ -70,19 +71,22 @@ const GC={};PG.forEach(g=>g.g.split(',').forEach(x=>x&&(GC[x]=(GC[x]||0)+1)));
 const CHIPS=Object.keys(GC).filter(x=>x!='mobile').sort((a,b)=>GC[b]-GC[a]).slice(0,24),PER=()=>+S.per||120;
 let chip='All',shown=PER();
 
-let IO;
-function games(){const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
-const CH=[['All','All','All'],['Favorites',ico('heart',15)+' Favorites','Favorites'],['Recent',ico('clock',15)+' Recent','Recent'],['Mobile',ico('phone',15)+' Phone-ready','Phone-ready'],['Classics','Classics','Classics'],...CHIPS.map(x=>{const n=x.replace(/-/g,' ');return[x,n,n]})];
-v.innerHTML=`<section class="hero"><h1>${S.discreet?'Files':'Play <span class="rot" id="rot"></span>'}</h1><p class="sub"><b id="cnt">0</b> games ready<button class="surp sb" id="sur">${ico('dice',16)} Surprise me</button></p></section><div class="row top"><input id="q" placeholder="Search games (press / )" autocomplete="off"><select id="so">${[['pop','Popular'],['az','A to Z'],['za','Z to A'],['shuf','Shuffle']].map(o=>`<option value="${o[0]}"${S.sort==o[0]?' selected':''}>${o[1]}</option>`).join('')}</select></div><div class="chips">${CH.map(c=>`<button data-c="${c[0]}" class="${c[0]==chip?'on':''}">${c[1]}</button>`).join('')}</div><section id="cw" hidden><h2 class="sh">Continue playing</h2><div class="strip" id="st"></div></section><p class="rc" id="rc"></p><div class="grid" id="g"></div><button class="btn" id="more">Show more</button>`;
-const all=[...S.custom.map(c=>({id:c.url,name:c.name,i:'globe',d:'Custom game',url:c.url})),...PG,...GAMES],rk=new Map(all.map(g=>[g.id,Math.random()])),real=all.filter(g=>!g.ext);
-if($('#rot'))RT=S.calm?($('#rot').textContent='games',0):rotText($('#rot'),['puzzles','racers','shooters','idle games','arcade hits','3D worlds'],2200);
-countUp($('#cnt'),real.length);
-let list=[],rendered=0;
-const ok=g=>!(S.mobonly&&g.id.startsWith('pg:')&&!g.m)&&(chip=='All'||(chip=='Favorites'?S.fav.includes(g.id):chip=='Recent'?S.recent.includes(g.id):chip=='Mobile'?!!g.m:chip=='Classics'?!g.id.startsWith('pg:'):(g.g||'').split(',').includes(chip)));
-const card=g=>{const pg=g.id.startsWith('pg:'),tag=pg?(g.g.split(',')[0]||'').replace(/-/g,' '):g.ext?'Link':g.d=='Custom game'?'Custom':'Classic',
+const card=g=>{const pg=/^(pg|gm):/.test(g.id),tag=pg?(g.g.split(',')[0]||'').replace(/-/g,' '):g.ext?'Link':g.d=='Custom game'?'Custom':'Classic',
 img=g.img&&S.thumbs?`<img src="${esc(g.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onload="this.classList.add('ok')" onerror="this.remove()">`:'';
 const a=mk('button','card'+(pg?'':' cl'),`<span class="thumb">${ico(g.i||'gamepad',30,'fb')}${img}${tag?`<i class="tag">${esc(tag)}</i>`:''}</span>${g.ext?'':`<span class="hrt${S.fav.includes(g.id)?' on':''}">${ico('heart',15)}</span>`}<b>${esc(g.name)}</b><small>${esc(g.d)}</small>`);
 a.onclick=e=>{const h=e.target.closest('.hrt');if(h)return toggleFav(g.id,h);g.ext?open(g.url,'_blank','noopener'):play(g)};fx(a);return a};
+let IO;
+function games(c0,q0){if(c0)chip=c0;const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
+const CH=[['All','All','All'],['Favorites',ico('heart',15)+' Favorites','Favorites'],['Recent',ico('clock',15)+' Recent','Recent'],['Mobile',ico('phone',15)+' Phone-ready','Phone-ready'],['Classics','Classics','Classics'],['GM','GameMonetize','GameMonetize'],...CHIPS.map(x=>{const n=x.replace(/-/g,' ');return[x,n,n]})];
+v.innerHTML=`<section class="hero"><h1>${S.discreet?'Files':'Play <span class="rot" id="rot"></span>'}</h1><p class="sub"><b id="cnt">0</b> games ready<button class="surp sb" id="sur">${ico('dice',16)} Surprise me</button></p></section><div class="row top"><input id="q" placeholder="Search games (press / )" autocomplete="off"><select id="so">${[['pop','Popular'],['az','A to Z'],['za','Z to A'],['shuf','Shuffle']].map(o=>`<option value="${o[0]}"${S.sort==o[0]?' selected':''}>${o[1]}</option>`).join('')}</select></div><div class="chips">${CH.map(c=>`<button data-c="${c[0]}" class="${c[0]==chip?'on':''}">${c[1]}</button>`).join('')}</div><section id="cw" hidden><h2 class="sh">Continue playing</h2><div class="strip" id="st"></div></section><p class="rc" id="rc"></p><div class="grid" id="g"></div><button class="btn" id="more">Show more</button>`;
+if(q0!=null){const i=$('#q');i.value=q0;i.focus()}
+v.querySelector('.hero').insertAdjacentHTML('afterbegin','<button class="surp bk" id="bk">'+ico('chevl',14)+' All games</button>');$('#bk').onclick=()=>go('games');
+const all=ALL(),rk=new Map(all.map(g=>[g.id,Math.random()])),real=all.filter(g=>!g.ext);
+if($('#rot'))RT=S.calm?($('#rot').textContent='games',0):rotText($('#rot'),['puzzles','racers','shooters','idle games','arcade hits','3D worlds'],2200);
+countUp($('#cnt'),real.length);
+let list=[],rendered=0;
+const ok=g=>!(S.mobonly&&g.id.startsWith('pg:')&&!g.m)&&(chip=='All'||(chip=='Favorites'?S.fav.includes(g.id):chip=='Recent'?S.recent.includes(g.id):chip=='Mobile'?!!g.m:chip=='GM'?g.id.startsWith('gm:'):chip=='Classics'?!/^(pg|gm):/.test(g.id):(g.g||'').split(',').includes(chip)));
+
 const more=()=>{const g=$('#g');list.slice(rendered,shown).forEach((x,k)=>{const c=card(x);c.style.animationDelay=Math.min(k,28)*18+'ms';g.append(c)});rendered=Math.min(shown,list.length);$('#more').hidden=rendered>=list.length;$('#more').textContent='Show more ('+(list.length-rendered)+' left)'};
 const fill=()=>{while(!$('#more').hidden&&$('#more').getBoundingClientRect().top<innerHeight+800){shown+=PER();more()}};
 const build=()=>{const q=$('#q').value.toLowerCase().trim();list=all.filter(g=>g.name.toLowerCase().includes(q)&&ok(g));
@@ -151,7 +155,7 @@ S.custom=(Array.isArray(S.custom)?S.custom:[]).filter(x=>x&&typeof x.name=='stri
 save();apply();settings();toast('Backup restored')}catch(e){toast('That backup code didn’t work')}};
 $('#cr').onclick=()=>{S.recent=[];save();toast('Recent games cleared')};$('#cf').onclick=()=>{S.fav=[];save();toast('Favorites cleared')};
 $('#rs').onclick=()=>{if(confirm('Reset all settings, favorites and your sign-in on this device?')){try{['nd','nd_terms','nd_key','nd_tok'].forEach(k=>localStorage.removeItem(k));sessionStorage.removeItem('nd_tok')}catch(e){}location.reload()}}}
-const API='https://nullden.zzearyd.workers.dev';  /* paste your relay URL here, no trailing slash (see worker.js) */
+const API='https://nullden.zzearyd.workers.dev/';  /* paste your relay URL here, no trailing slash (see worker.js) */
 /* React Bits style effects, in plain JS */
 let RT;
 function rotText(el,w,ms){let i=0;const t=()=>{el.textContent=w[i++%w.length];el.classList.remove('in');void el.offsetWidth;el.classList.add('in')};t();return setInterval(t,ms)}
@@ -165,11 +169,11 @@ let ME=null,TOK='',EI;try{TOK=localStorage.nd_tok||sessionStorage.nd_tok||''}cat
 function toast(t){let e=$('#toast');if(!e){e=mk('div');e.id='toast';document.body.append(e)}e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2400)}
 function setMe(m){const o=ME?ME.nb:null;ME=m;$('#bux').innerHTML=m?(m.role=='owner'?ico('crown',16)+' ':'')+ico('coin',16)+' '+m.nb.toLocaleString():'Log in';const st=$('#stf');st.hidden=!isStaff(m);st.innerHTML=isStaff(m)?ico('shield',18):'';if(m&&o!==null&&o!==m.nb){const b=$('#bux');b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}renderNotes()}
 async function api(p,b,auth=1){if(!API)throw new Error('Accounts are not set up on this site yet.');
-const r=await fetch(API+p,{method:b?'POST':'GET',headers:{...(b?{'content-type':'application/json'}:{}),...(TOK&&auth?{authorization:'Bearer '+TOK}:{})},body:b?JSON.stringify(b):undefined});
+const r=await fetch(API.replace(/\/+$/,'')+p,{method:b?'POST':'GET',headers:{...(b?{'content-type':'application/json'}:{}),...(TOK&&auth?{authorization:'Bearer '+TOK}:{})},body:b?JSON.stringify(b):undefined});
 const j=await r.json().catch(()=>({}));if(!r.ok){const e=new Error(j.error||'Something went wrong');e.needKey=j.needKey;e.banned=j.banned;throw e}return j}
 function startEarn(){clearInterval(EI);if(ME)EI=setInterval(()=>{if(document.visibilityState=='visible')api('/earn',{}).then(j=>setMe(j.me)).catch(()=>{})},300000)}
 function account(){const v=$('#view');
-if(ME){v.innerHTML=`<h1>${esc(ME.u)}${badge(ME.role)}</h1><div class="panel"><h3>Nullbux</h3><p class="big">${ico('coin',30)} ${ME.nb.toLocaleString()}</p><small>Daily streak: ${ME.streak}. Earn Nullbux with the daily reward and by playing games: 2 per minute, paid out every 5 minutes, up to 300 a day.</small><div class="row"><button class="btn" id="dl"${ME.canDaily?'':' disabled'}>${ME.canDaily?'Claim daily reward':'Claimed. Come back tomorrow'}</button><button id="lo">Log out</button></div></div><div class="panel"><h3>Privacy</h3><label class="row"><input type="checkbox" id="pp"${ME.pub?' checked':''}> Public profile: other players can see my Nullbux, inventory and recent games</label></div>${isStaff(ME)?'<div class="panel"><h3>Staff tools</h3><div class="row"><button class="btn" id="tap">Appeals</button>'+(ME.role=='owner'?'<button id="ad">Admin panel</button>':'')+'</div></div>':''}`;
+if(ME){v.innerHTML=`<h1>${esc(ME.u)}${badge(ME.role)}</h1><div class="panel"><h3>Nullbux</h3><p class="big">${ico('coin',30)} ${ME.nb.toLocaleString()}</p><small>Daily streak: ${ME.streak}. Earn Nullbux with the daily reward and by playing games: 2 per minute, paid out every 5 minutes, up to 300 a day.</small><div class="row"><button class="btn" id="dl"${ME.canDaily?'':' disabled'}>${ME.canDaily?'Claim daily reward':'Claimed. Come back tomorrow'}</button><button id="lo">Log out</button></div></div><div class="panel"><h3>Privacy</h3><label class="row"><input type="checkbox" id="pp"${ME.pub?' checked':''}> Public profile: other players can see my Nullbux, inventory and recent games</label></div>${isStaff(ME)?'<div class="panel"><h3>Staff tools</h3><div class="row"><button class="btn" id="ad">Admin menu</button><button id="tap">Appeals</button></div></div>':''}`;
 $('#dl').onclick=async()=>{try{const j=await api('/daily',{});setMe(j.me);toast('+'+j.gain+' Nullbux');account()}catch(e){toast(e.message)}};
 $('#lo').onclick=()=>{TOK='';try{localStorage.removeItem('nd_tok');sessionStorage.removeItem('nd_tok')}catch(e){}clearInterval(EI);setMe(null);account()};
 $('#pp').onchange=async e=>{try{const j=await api('/privacy',{pub:e.target.checked});setMe(j.me)}catch(x){toast(x.message)}};
@@ -190,8 +194,9 @@ draw()}
 /* Players, owner admin panel, announcements and giveaways */
 let ITM=null,ST={a:null,g:null};
 async function items(){if(!ITM){const s=await api('/shop',0,0);ITM={};s.items.forEach(i=>ITM[i.id]=i)}return ITM}
-const isStaff=m=>!!m&&(m.role=='owner'||m.role=='staff');
-const badge=r=>r=='owner'?' <span class="own">'+ico('crown',14)+'Owner</span>':r=='staff'?' <span class="own staff">'+ico('shield',14)+'Staff</span>':'';
+const RK=r=>({owner:4,admin:3,manager:2,moderator:1,staff:1})[r]||0,ROLEN={owner:'Owner',admin:'Admin',manager:'Manager',moderator:'Moderator',staff:'Moderator'},RI={owner:'crown',admin:'shield',manager:'users',moderator:'check',staff:'check'};
+const isStaff=m=>!!m&&RK(m.role)>=1;
+const badge=r=>RK(r)?' <span class="own r'+RK(r)+'">'+ico(RI[r]||'shield',14)+ROLEN[r]+'</span>':'';
 async function loadStatus(){if(!API)return;try{ST=await api('/status',0,0);renderNotes()}catch(e){}}
 function renderNotes(){const n=$('#notes');if(!n)return;const a=ST.a,g=ST.g;let h='';
 if(a&&a.id!=(S.ann|0))h+=`<div class="note"><span>${ico('mega',18)} ${esc(a.text)}</span><button data-n="a" title="Dismiss">${ico('x',16)}</button></div>`;
@@ -209,36 +214,38 @@ try{const p=await api('/profile?u='+encodeURIComponent(u)),it=await items();
 if(p.private){el.innerHTML=`<div class="panel"><h3>${esc(p.u)}${badge(p.role)}</h3><small>This profile is private.</small></div>`;return}
 const inv=Object.keys(p.inv||{}).map(id=>it[id]?`<div class="item ${it[id].r}"><span class="ie">${ico(it[id].ic,40)}</span><b>${esc(it[id].n)} ×${p.inv[id]}</b></div>`:'').join('');
 el.innerHTML=`<div class="panel prof"><h3>${esc(p.u)}${badge(p.role)}${p.banned?' '+ico('ban',16)+' banned':''}</h3><p class="big">${ico('coin',30)} ${p.nb.toLocaleString()}</p><small>${p.joined?'Joined '+new Date(p.joined).toLocaleDateString()+' · ':''}${p.pub?'Public profile':'Private profile'}</small><h4>Inventory</h4><div class="items">${inv||'<small>Empty</small>'}</div><h4>Recently played</h4>${p.rec.length?'<ul class="rl">'+p.rec.map(x=>`<li>${esc(x.name)} <small>${new Date(x.t).toLocaleString()}</small></li>`).join('')+'</ul>':'<small>Nothing yet</small>'}</div>`
-if(mod&&isStaff(ME)&&p.role!='owner'&&(p.role!='staff'||ME.role=='owner')){el.querySelector('.prof').insertAdjacentHTML('beforeend','<h4>Moderation</h4><div class="row"><input id="sr" placeholder="Ban reason (optional)" maxlength="120"><button id="sb1">Ban</button><button id="sb2">Unban</button></div>');
+if(mod&&isStaff(ME)&&RK(p.role)<RK(ME.role)){el.querySelector('.prof').insertAdjacentHTML('beforeend','<h4>Moderation</h4><div class="row"><input id="sr" placeholder="Ban reason (optional)" maxlength="120"><button id="sb1">Ban</button><button id="sb2">Unban</button></div>');
 const ban=async b=>{try{await api('/staff/ban',{u:p.u,ban:b,reason:$('#sr').value});toast(b?'Banned':'Unbanned');showProfile(u,el,mod)}catch(x){toast(x.message)}};$('#sb1').onclick=()=>ban(true);$('#sb2').onclick=()=>ban(false)}
 }catch(e){el.innerHTML='<small>'+esc(e.message)+'</small>'}}
-async function admin(){const v=$('#view');if(!ME||ME.role!='owner')return go('games');
-v.innerHTML=`<h1>Admin</h1><div class="panel"><h3>Overview</h3><p class="sub" id="stt">Loading…</p><div class="row"><button class="btn" id="toap">${ico('inbox',16)} Appeals</button></div></div>
-<div class="panel"><h3>Announcement</h3><div class="row"><input id="at" maxlength="300" placeholder="Message for everyone on the site" size="36"></div><div class="row"><button class="btn" id="as">Send to everyone</button><button id="ac">Clear</button></div><small>Shows as a banner for every visitor until they dismiss it.</small></div>
-<div class="panel"><h3>Giveaway</h3><div class="row"><input id="gt" placeholder="Title" maxlength="60"><input id="ga" type="number" min="1" placeholder="Nullbux each"><input id="gm" type="number" min="1" placeholder="Minutes"></div><div class="row"><button class="btn" id="gs">Start giveaway</button><button id="ge">End giveaway</button></div><small>Each player can claim once while it runs.</small></div>
-<div class="panel"><h3>Manage a player</h3><div class="row"><input id="mu" placeholder="Username" maxlength="16"><button class="btn" id="ml">Look up</button><button id="me">That’s me</button></div><small>Ban blocks logins but keeps the account. Delete removes it for good.</small><div id="mv"></div></div>`;
-$('#toap').onclick=()=>go('appeals');
-api('/admin/stats').then(s=>{$('#stt').textContent=s.users+(s.more?'+':'')+' accounts · '+s.pending+' pending appeal'+(s.pending==1?'':'s')}).catch(e=>{$('#stt').textContent=e.message});
+async function admin(){const v=$('#view'),k=RK(ME&&ME.role);if(k<1)return go('games');
+const CAN=[[1,'Review ban appeals, ban and unban members, delete forum posts'],[2,'Send announcements, run giveaways, see site stats, post in News'],[3,'Adjust Nullbux and items, reset passwords, appoint moderators and managers'],[4,'Appoint admins and delete accounts']];
+v.innerHTML=`<h1>Admin menu</h1><p class="sub">Signed in as ${esc(ME.u)}${badge(ME.role)}</p>
+<div class="panel"><h3>Overview</h3><p class="sub" id="stt">${k>=2?'Loading…':'Site stats are available to managers and above.'}</p><div class="row"><button class="btn" id="toap">${ico('inbox',16)} Appeals</button></div></div>
+${k>=2?`<div class="panel"><h3>Announcement</h3><div class="row"><input id="at" maxlength="300" placeholder="Message for everyone on the site" size="36"></div><div class="row"><button class="btn" id="as">Send to everyone</button><button id="ac">Clear</button></div><small>Shows as a banner for every visitor until they dismiss it.</small></div>
+<div class="panel"><h3>Giveaway</h3><div class="row"><input id="gt" placeholder="Title" maxlength="60"><input id="ga" type="number" min="1" placeholder="Nullbux each"><input id="gm" type="number" min="1" placeholder="Minutes"></div><div class="row"><button class="btn" id="gs">Start giveaway</button><button id="ge">End giveaway</button></div><small>Each player can claim once while it runs.</small></div>`:''}
+<div class="panel"><h3>Manage a player</h3><div class="row"><input id="mu" placeholder="Username" maxlength="16"><button class="btn" id="ml">Look up</button><button id="me">That’s me</button></div><small>You can only change accounts ranked below you.</small><div id="mv"></div></div>
+<div class="panel"><h3>Your access</h3><ul class="rl">${CAN.filter(x=>k>=x[0]).map(x=>'<li>'+x[1]+'</li>').join('')}</ul></div>`;
+const on=(id,f)=>{const e=$(id);if(e)e.onclick=f};on('#toap',()=>go('appeals'));
+if(k>=2){api('/admin/stats').then(s=>{$('#stt').textContent=s.users+(s.more?'+':'')+' accounts · '+s.pending+' pending appeal'+(s.pending==1?'':'s')}).catch(e=>{$('#stt').textContent=e.message});
 const post=async(p,b,m)=>{try{await api(p,b);toast(m);loadStatus()}catch(e){toast(e.message)}};
-$('#as').onclick=()=>post('/admin/announce',{text:$('#at').value},'Announcement sent');
-$('#ac').onclick=()=>post('/admin/announce',{text:''},'Announcement cleared');
-$('#gs').onclick=()=>post('/admin/giveaway',{title:$('#gt').value,amount:$('#ga').value,minutes:$('#gm').value},'Giveaway started');
-$('#ge').onclick=()=>post('/admin/giveaway',{end:true},'Giveaway ended');
-$('#me').onclick=()=>{$('#mu').value=ME.u;$('#ml').click()};
-$('#ml').onclick=async()=>{const u=$('#mu').value.trim().toLowerCase(),mv=$('#mv');await showProfile(u,mv);if(!mv.querySelector('.prof'))return;
-let it={};try{it=await items()}catch(e){}
-mv.querySelector('.prof').insertAdjacentHTML('beforeend',`<h4>Nullbux</h4><div class="row"><input id="mn" type="number" placeholder="Amount"><button id="mset">Set</button><button id="madd">Add</button></div><div class="row">${[100,1000,10000,-100].map(q=>`<button data-q="${q}">${q>0?'+':''}${q.toLocaleString()}</button>`).join('')}</div><h4>Items</h4><div class="row"><select id="mi">${Object.values(it).filter(i=>i.id!='crate').map(i=>`<option value="${i.id}">${esc(i.n)}</option>`).join('')}</select><input id="mq" type="number" value="1" min="-99" max="99"><button id="mgive">Give or remove</button></div><small>Use a negative number to remove items.</small><h4>Moderation</h4><div class="row"><input id="mr" placeholder="Ban reason (optional)" maxlength="120"><button id="mban">Ban</button><button id="munban">Unban</button></div><div class="row"><input id="mp" type="password" placeholder="New password for them" autocomplete="new-password"><button id="mpass">Reset password</button></div><div class="row"><button id="mstaff">Make staff</button><button id="mustaff">Remove staff</button><button id="md" class="danger">${ico('trash',15)} Delete account</button></div>`);
-const run=async(p,b,m)=>{try{await api(p,b);toast(m);$('#ml').click()}catch(e){toast(e.message)}};
-$('#mset').onclick=()=>run('/admin/nb',{u,op:'set',amount:$('#mn').value},'Nullbux set');
-$('#madd').onclick=()=>run('/admin/nb',{u,op:'add',amount:$('#mn').value},'Nullbux added');
+on('#as',()=>post('/admin/announce',{text:$('#at').value},'Announcement sent'));on('#ac',()=>post('/admin/announce',{text:''},'Announcement cleared'));
+on('#gs',()=>post('/admin/giveaway',{title:$('#gt').value,amount:$('#ga').value,minutes:$('#gm').value},'Giveaway started'));on('#ge',()=>post('/admin/giveaway',{end:true},'Giveaway ended'))}
+on('#me',()=>{$('#mu').value=ME.u;$('#ml').click()});
+on('#ml',async()=>{const u=$('#mu').value.trim().toLowerCase(),mv=$('#mv');await showProfile(u,mv);const p=mv.querySelector('.prof')&&await api('/profile?u='+encodeURIComponent(u)).catch(()=>0);if(!p)return;
+const lower=RK(p.role)<k,own=u==ME.u&&k>=4,full=lower||own;let it={},h='';
+if(k>=3&&full)try{it=await items()}catch(e){}
+if(lower)h+=`<h4>Moderation</h4><div class="row"><input id="mr" placeholder="Ban reason (optional)" maxlength="120"><button id="mban">Ban</button><button id="munban">Unban</button></div>`;
+if(k>=3&&full)h+=`<h4>Nullbux</h4><div class="row"><input id="mn" type="number" placeholder="Amount"><button id="mset">Set</button><button id="madd">Add</button></div><div class="row">${[100,1000,10000,-100].map(q=>`<button data-q="${q}">${q>0?'+':''}${q.toLocaleString()}</button>`).join('')}</div><h4>Items</h4><div class="row"><select id="mi">${Object.values(it).filter(i=>i.id!='crate').map(i=>`<option value="${i.id}">${esc(i.n)}</option>`).join('')}</select><input id="mq" type="number" value="1" min="-99" max="99"><button id="mgive">Give or remove</button></div><small>Use a negative number to remove items.</small><h4>Password</h4><div class="row"><input id="mp" type="password" placeholder="New password for them" autocomplete="new-password"><button id="mpass">Reset password</button></div>`;
+if(k>=3&&lower)h+=`<h4>Role</h4><div class="row"><select id="mrole">${[['','Member'],['moderator','Moderator'],['manager','Manager'],['admin','Admin']].filter(r=>RK(r[0])<k).map(r=>`<option value="${r[0]}"${(p.role=='staff'?'moderator':p.role||'')==r[0]?' selected':''}>${r[1]}</option>`).join('')}</select><button id="mrs">Set role</button></div>`;
+if(k>=4&&p.role!='owner')h+=`<h4>Danger zone</h4><div class="row"><button id="md" class="danger">${ico('trash',15)} Delete account</button></div>`;
+mv.querySelector('.prof').insertAdjacentHTML('beforeend',h||'<small>You can view this account but not change it.</small>');
+const run=async(path,b,m)=>{try{await api(path,b);toast(m);$('#ml').click()}catch(e){toast(e.message)}};
+on('#mban',()=>run('/staff/ban',{u,ban:true,reason:$('#mr').value},'Banned'));on('#munban',()=>run('/staff/ban',{u,ban:false},'Unbanned'));
+on('#mset',()=>run('/admin/nb',{u,op:'set',amount:$('#mn').value},'Nullbux set'));on('#madd',()=>run('/admin/nb',{u,op:'add',amount:$('#mn').value},'Nullbux added'));
 mv.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>run('/admin/nb',{u,op:'add',amount:b.dataset.q},'Nullbux updated'));
-$('#mgive').onclick=()=>run('/admin/item',{u,id:$('#mi').value,qty:$('#mq').value},'Inventory updated');
-$('#mban').onclick=()=>run('/staff/ban',{u,ban:true,reason:$('#mr').value},'Banned');
-$('#munban').onclick=()=>run('/staff/ban',{u,ban:false},'Unbanned');
-$('#mpass').onclick=()=>run('/admin/pass',{u,p:$('#mp').value},'Password reset');
-$('#mstaff').onclick=()=>run('/admin/role',{u,role:'staff'},'Now staff');
-$('#mustaff').onclick=()=>run('/admin/role',{u,role:''},'Staff removed');
-$('#md').onclick=async()=>{if(confirm('Delete '+u+' permanently? This cannot be undone.'))try{await api('/admin/delete',{u});toast('Account deleted');mv.innerHTML=''}catch(e){toast(e.message)}}}}
+on('#mgive',()=>run('/admin/item',{u,id:$('#mi').value,qty:$('#mq').value},'Inventory updated'));on('#mpass',()=>run('/admin/pass',{u,p:$('#mp').value},'Password reset'));
+on('#mrs',()=>run('/admin/role',{u,role:$('#mrole').value},'Role updated'));
+on('#md',async()=>{if(confirm('Delete '+u+' permanently? This cannot be undone.'))try{await api('/admin/delete',{u});toast('Account deleted');mv.innerHTML=''}catch(e){toast(e.message)}})})}
 $('#bux').onclick=()=>go('account');
 if(TOK)api('/me').then(setMe).catch(e=>{if(e.message=='Please log in'||/banned/.test(e.message)){TOK='';try{localStorage.removeItem('nd_tok');sessionStorage.removeItem('nd_tok')}catch(x){}}});
 loadStatus();setInterval(loadStatus,300000);
@@ -274,7 +281,7 @@ matrix:()=>{const f=16*d,cols=Math.ceil(W/f),y=Array.from({length:cols},()=>R()*
 if(!MODES[m]){bgc.style.display='none';return}
 const draw=MODES[m]();const f=()=>{if(!document.hidden)draw();BGR=requestAnimationFrame(f)};f()}
 async function appeals(){const v=$('#view');if(!isStaff(ME))return go('games');
-v.innerHTML=`<h1>Appeals</h1><p class="sub">Staff only.${ME.role=='owner'?'<button class="surp" id="toad">Admin panel</button>':''}</p><div id="al"><small>Loading…</small></div><div id="apv"></div>`;
+v.innerHTML=`<h1>Appeals</h1><p class="sub">Staff only.<button class="surp" id="toad">Admin menu</button></p><div id="al"><small>Loading…</small></div><div id="apv"></div>`;
 if($('#toad'))$('#toad').onclick=()=>go('admin');
 const reload=async()=>{try{const j=await api('/staff/appeals');$('#al').innerHTML=j.appeals.length?j.appeals.map(a=>`<div class="panel ap"><h3>${esc(a.u)} <small>${new Date(a.t).toLocaleString()}${a.status!='pending'?' · denied':''}</small></h3>${a.reason?`<small>Ban reason: ${esc(a.reason)}</small>`:''}<p>${esc(a.msg)}</p>${a.note?`<small>Staff note: ${esc(a.note)}</small>`:''}<div class="row"><input placeholder="Note to keep on file (optional)" maxlength="200"><button class="btn" data-a="approve" data-u="${esc(a.u)}">${ico('check',15)} Approve and unban</button><button data-a="deny" data-u="${esc(a.u)}">Deny</button><button data-v="${esc(a.u)}">View profile</button></div></div>`).join(''):'<small>No appeals right now.</small>'}catch(e){$('#al').innerHTML='<small>'+esc(e.message)+'</small>'}};
 $('#al').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.v)return showProfile(b.dataset.v,$('#apv'),1);
@@ -293,8 +300,56 @@ $('#px').onclick=quit;$('#ph').onclick=()=>$('#player').classList.add('min');$('
 addEventListener('keydown',e=>{if(e.key==S.pkey&&e.target.tagName!='INPUT')location.replace(S.panic);if(e.key=='Escape'&&!$('#player').hidden)quit();if(e.key=='/'&&e.target.tagName!='INPUT'&&$('#q')&&$('#player').hidden){e.preventDefault();$('#q').focus()}});
 document.querySelectorAll('#nav button').forEach(b=>b.insertAdjacentHTML('afterbegin',ico(b.dataset.i,19)));
 [['pr','refresh'],['pl','link'],['ph','chevup'],['po','ext'],['pf','max'],['px','x']].forEach(([id,i])=>{const b=$('#'+id);b.title=b.textContent;b.innerHTML=ico(i,16)+'<span>'+b.textContent+'</span>'});
-$('#ps').innerHTML=ico('chevdown',14)+' Show bar';$('#stf').onclick=()=>go('appeals');
+$('#ps').innerHTML=ico('chevdown',14)+' Show bar';$('#stf').onclick=()=>go('admin');
 let ly=0;addEventListener('scroll',()=>{const y=scrollY,hd=$('header');if(y>90&&y>ly+6)hd.classList.add('hide');else if(y<ly-6||y<=90)hd.classList.remove('hide');ly=y},{passive:true});
 let lc=0,lt;$('#logo').onclick=()=>{clearTimeout(lt);if(++lc>=5){lc=0;go('corner')}else lt=setTimeout(()=>lc=0,1500)};
+/* Home rails, GameMonetize feed and video, forums */
+let GM=[],FCH='general',FT,FLAST='';
+const ALL=()=>[...S.custom.map(c=>({id:c.url,name:c.name,i:'globe',d:'Custom game',url:c.url})),...PG,...GM,...GAMES],
+GMURL='https://gamemonetize.com/feed.php?format=0&num=50&page=1',
+slug=s=>String(s||'').toLowerCase().trim().replace(/\s+/g,'-'),
+cap=s=>s.replace(/-/g,' ').replace(/^./,c=>c.toUpperCase()),
+gmMap=a=>(Array.isArray(a)?a:[]).filter(x=>x&&x.id&&x.title&&/^https:\/\//.test(x.url)).map(x=>({id:'gm:'+x.id,name:String(x.title).trim(),g:[...new Set([x.category,...String(x.tags||'').split(',')].map(slug).filter(Boolean))].slice(0,3).join(','),d:String(x.category||'Arcade'),img:/^https:\/\//.test(x.thumb||'')?x.thumb:'',m:1,url:x.url}));
+async function loadGM(){try{const c=JSON.parse(sessionStorage.nd_gm||'null');if(c&&Date.now()-c.t<36e5){GM=gmMap(c.d);return}}catch(e){}
+let d;try{d=await(await fetch(GMURL)).json()}catch(e){try{d=await api('/feed?page=1',0,0)}catch(x){return}}
+GM=gmMap(d);try{sessionStorage.nd_gm=JSON.stringify({t:Date.now(),d})}catch(e){}}
+const GMP=loadGM();
+function gmVideo(){window.VIDEO_OPTIONS={gameid:'4kci7og3klgj0ivy2wz3gdvd9dth5e7n',width:'100%',height:'480px',color:'#3f007e',getAds:'false'};
+const o=document.getElementById('gamemonetize-video-api');o&&o.remove();const s=document.createElement('script');s.id='gamemonetize-video-api';s.src='https://api.gamemonetize.com/video.js';document.head.append(s)}
+function fillHome(){if(!$('#r1'))return;const a=ALL().filter(g=>!g.ext),pg=a.filter(g=>g.id.startsWith('pg:')),gm=a.filter(g=>g.id.startsWith('gm:')),cl=a.filter(g=>!/^(pg|gm):/.test(g.id)&&g.d!='Custom game');
+const pop=[],L=[pg,gm,cl];for(let i=0;pop.length<30&&i<40;i++)L.forEach(l=>l[i]&&pop.length<30&&pop.push(l[i]));
+const rec=S.cont?S.recent.map(id=>a.find(g=>g.id==id)).filter(Boolean):[],R=[['Popular',pop,'All',1,a.length]];
+if(rec.length)R.push(['Continue playing',rec.slice(0,20),'Recent',0,rec.length]);
+if(gm.length)R.push(['Fresh from GameMonetize',gm.slice(0,30),'GM',0,gm.length]);
+const gc={};a.forEach(g=>(g.g||'').split(',').forEach(x=>x&&x!='mobile'&&(gc[x]=(gc[x]||0)+1)));
+Object.keys(gc).filter(x=>gc[x]>=10).sort((x,y)=>gc[y]-gc[x]).slice(0,10).forEach(x=>{const l=a.filter(g=>(g.g||'').split(',').includes(x));R.push([cap(x),l.slice(0,30),x,0,l.length])});
+if(cl.length)R.push(['Classics',cl,'Classics',0,cl.length]);
+$('#cnt').textContent=a.length.toLocaleString();
+const put=(el,rs)=>{el.innerHTML='';rs.forEach(r=>{const s=mk('section','rw'+(r[3]?' big':''),`<div class="rh"><h2>${esc(r[0])}</h2><small>${r[4].toLocaleString()} games</small><button class="va">View all</button><span class="ar"><button aria-label="Scroll left">${ico('chevl',16)}</button><button aria-label="Scroll right">${ico('chevr',16)}</button></span></div><div class="rail"></div>`),rl=s.querySelector('.rail'),ab=s.querySelectorAll('.ar button');
+r[1].forEach(g=>rl.append(card(g)));s.querySelector('.va').onclick=()=>{chip=r[2];games();scrollTo(0,0)};
+ab[0].onclick=()=>rl.scrollBy({left:-rl.clientWidth*.8,behavior:'smooth'});ab[1].onclick=()=>rl.scrollBy({left:rl.clientWidth*.8,behavior:'smooth'});el.append(s)})};
+put($('#r1'),R.slice(0,2));put($('#r2'),R.slice(2))}
+function home(){chip='All';const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
+v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="Search games (press / )" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><div id="r1"></div><section class="vid panel"><div class="vh"><h2 class="sh">Watch before you play</h2><small>Game walkthroughs from GameMonetize</small></div><div id="gamemonetize-video"></div></section><div id="r2"></div>`;
+$('#q').oninput=e=>{if(e.target.value.trim())games('All',e.target.value)};
+$('#sur').onclick=()=>{const p=ALL().filter(g=>!g.ext);play(p[Math.random()*p.length|0])};
+fillHome();gmVideo();GMP.then(fillHome)}
+const FC=[['general','General','Chat about anything'],['games','Game talk','Tips, scores and recommendations'],['help','Help and bugs','Something broken? Ask here'],['news','News','Updates from the team']],
+ago=t=>{const s=(Date.now()-t)/1000|0;return s<60?'just now':s<3600?(s/60|0)+'m ago':s<86400?(s/3600|0)+'h ago':new Date(t).toLocaleDateString()};
+function forum(){const v=$('#view');
+if(!ME){v.innerHTML='<h1>Forums</h1><div class="panel"><p>Log in to read and post.</p><button class="btn" id="gl">Log in or sign up</button></div>';$('#gl').onclick=()=>go('account');return}
+const nm=(FC.find(c=>c[0]==FCH)||FC[0])[1];
+v.innerHTML=`<h1>Forums</h1><div class="forum"><div class="fch">${FC.map(c=>`<button data-c="${c[0]}" class="${c[0]==FCH?'on':''}"><b>${c[1]}</b><small>${c[2]}</small></button>`).join('')}</div><section class="fmain"><div class="fmsgs" id="fm" aria-live="polite"></div><div class="fcomp"><input id="fi" maxlength="240" placeholder="Message ${esc(nm)}" autocomplete="off" aria-label="Message"><button class="btn" id="fs">Send</button></div></section></div>`;
+const m=$('#fm'),load=async force=>{if(!$('#fm'))return clearInterval(FT);
+try{const j=await api('/forum?c='+FCH),sig=j.msgs.map(x=>x.k).join();$('#fi').disabled=$('#fs').disabled=!j.canPost;if(!j.canPost)$('#fi').placeholder='Only managers and above can post in '+nm;
+if(sig==FLAST&&!force)return;FLAST=sig;const near=m.scrollHeight-m.scrollTop-m.clientHeight<80;
+m.innerHTML=j.msgs.length?j.msgs.map(x=>`<div class="msg"><i class="av" style="--h:${Math.abs([...x.u].reduce((h,c)=>h*31+c.charCodeAt(0)|0,7))%360}">${esc(x.u[0])}</i><div><div class="mh"><b>${esc(x.u)}</b>${badge(x.r)}<small>${ago(x.t)}</small>${isStaff(ME)?`<button class="mx" data-d="${esc(x.k)}" title="Delete post">${ico('trash',14)}</button>`:''}</div><p>${esc(x.m)}</p></div></div>`).join(''):'<p class="fe">No messages yet. Start the conversation.</p>';
+if(near||force)m.scrollTop=m.scrollHeight}catch(e){m.innerHTML='<p class="fe">'+esc(e.message)+'</p>'}};
+const send=async()=>{const i=$('#fi'),t=i.value.trim();if(!t)return;i.value='';try{await api('/forum/post',{c:FCH,m:t});load(1)}catch(e){i.value=t;toast(e.message)}};
+$('#fs').onclick=send;$('#fi').onkeydown=e=>{if(e.key=='Enter')send()};
+m.onclick=async e=>{const b=e.target.closest('[data-d]');if(b)try{await api('/forum/delete',{k:b.dataset.d});load(1)}catch(x){toast(x.message)}};
+v.querySelector('.fch').onclick=e=>{const b=e.target.closest('[data-c]');if(b){FCH=b.dataset.c;FLAST='';forum()}};
+clearInterval(FT);FT=setInterval(()=>document.visibilityState=='visible'&&load(),8000);load(1)}
+
 apply();go('games');
-const hid=decodeURIComponent(location.hash.slice(1));if(hid){const g0=[...GAMES,...PG].find(x=>x.id==hid);if(g0&&!g0.ext)play(g0)}
+const hid=decodeURIComponent(location.hash.slice(1));if(hid){const dl=()=>{const g0=ALL().find(x=>x.id==hid);if(g0&&!g0.ext&&$('#player').hidden)play(g0)};dl();if(hid.startsWith('gm:'))GMP.then(dl)}

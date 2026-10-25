@@ -348,3 +348,59 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px color-mix(in srgb,v
 body,header,.panel,nav,#bux,.gcard{transition:background-color .4s,border-color .4s,color .4s}
 .calm *,.calm *::before,.calm *::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ===== v2: calmer look, home rails, roles, forums ===== */
+.logo{animation:none;background-size:100%}
+.btn{background:var(--a)}
+.btn:hover:not(:disabled){box-shadow:none;transform:none;filter:brightness(1.12)}
+.card::after{display:none}
+#bg i{animation:none;opacity:.16}
+#bg i:nth-child(3){opacity:.07}
+.hh{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:28px}
+.hh h1{margin:0 0 6px}
+.hs{display:flex;gap:10px;flex:1;justify-content:flex-end;min-width:min(100%,300px)}
+.hs #q{margin:0;max-width:380px;flex:1}
+.hs .surp{margin:0;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.hero .bk{display:inline-flex;align-items:center;gap:4px;margin:0 0 14px}
+.rw{margin-bottom:34px}
+.rh{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.rh h2{font:600 18px/1.2 var(--f);letter-spacing:-.01em}
+.rh small{margin-right:auto}
+.rh .va{background:none;border:1px solid var(--ln);border-radius:99px;padding:5px 14px;cursor:pointer;font-size:13px}
+.rh .va:hover{border-color:var(--a)}
+.rh .ar{display:flex;gap:6px}
+.rh .ar button{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--card);border:1px solid var(--ln);cursor:pointer}
+.rh .ar button:hover{border-color:var(--a)}
+.rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;padding:4px 2px 12px;margin:0 -2px}
+.rail::-webkit-scrollbar{display:none}
+.rail .card{flex:0 0 176px;scroll-snap-align:start}
+.rw.big .card{flex-basis:248px}
+.vid{padding:20px;margin-bottom:34px}
+.vh{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;margin-bottom:14px}
+.vh .sh{margin:0}
+#gamemonetize-video{border-radius:12px;overflow:hidden;min-height:200px;background:#000}
+.d .vid,.d .rh .ar{display:none}
+@media(hover:none){.rh .ar{display:none}}
+@media(max-width:640px){.rail .card{flex-basis:132px}.rw.big .card{flex-basis:168px}.hs{justify-content:stretch}.vid{padding:12px}}
+.own.r4{background:#b7791f}.own.r3{background:#c0392b}.own.r2{background:#0f8b8d}.own.r1{background:#3b6fd4}
+.forum{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start}
+.fch{display:flex;flex-direction:column;gap:4px;position:sticky;top:84px}
+.fch button{text-align:left;background:none;border:1px solid transparent;border-radius:12px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.fch button small{font-size:12px}
+.fch .on{background:var(--card);border-color:var(--ln)}
+.fmain{background:var(--card);border:1px solid var(--ln);border-radius:20px;display:flex;flex-direction:column;height:clamp(360px,72dvh,640px);overflow:hidden}
+.fmsgs{flex:1;overflow-y:auto;padding:6px 18px}
+.msg{display:grid;grid-template-columns:36px 1fr;gap:12px;padding:12px 0}
+.msg+.msg{border-top:1px solid var(--ln)}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:600 14px var(--f);font-style:normal;background:hsl(var(--h) 40% 36%);color:#fff;text-transform:uppercase}
+.mh{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mh b{font-weight:600}.mh small{font-size:12px}
+.mh .own{margin-left:0;font-size:11px;padding:1px 8px}
+.mx{margin-left:auto;background:none;border:0;color:var(--mu);cursor:pointer;opacity:.6}
+.mx:hover{opacity:1;color:#ef4444}
+.msg p{overflow-wrap:anywhere;white-space:pre-wrap;margin-top:2px}
+.fe{color:var(--mu);text-align:center;padding:40px 0}
+.fcomp{display:flex;gap:10px;padding:12px;border-top:1px solid var(--ln)}
+.fcomp input{flex:1;min-width:0}
+.fcomp :disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:760px){.forum{grid-template-columns:1fr}.fch{flex-direction:row;overflow-x:auto;position:static}.fch button{flex:none}.fch small{display:none}}

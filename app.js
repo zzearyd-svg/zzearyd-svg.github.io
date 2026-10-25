@@ -324,7 +324,7 @@ r[1].forEach(g=>rl.append(card(g)));s.querySelector('.va').onclick=()=>{chip=r[2
 ab[0].onclick=()=>rl.scrollBy({left:-rl.clientWidth*.8,behavior:'smooth'});ab[1].onclick=()=>rl.scrollBy({left:rl.clientWidth*.8,behavior:'smooth'});el.append(s)})};
 put($('#r1'),R.slice(0,2));put($('#r2'),R.slice(2))}
 function home(){chip='All';const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
-v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play <button class="rot" id="rot" title="Open this genre"></button>'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="Search games (press / )" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><div id="r1"></div><div id="r2"></div><aside class="adv sb" aria-label="Advertising"><b>Ads available</b><span>Contact <a href="mailto:zzearyd@gmail.com">zzearyd@gmail.com</a> for more info</span></aside>`;
+v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play <button class="rot" id="rot" title="Open this genre"></button>'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="Search games (press / )" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><aside class="adv sb" aria-label="Advertising"><b>Ads available</b><span>Contact <a href="mailto:zzearyd@gmail.com">zzearyd@gmail.com</a> for more info</span></aside><div id="r1"></div><div id="r2"></div>`;
 $('#q').oninput=e=>{if(e.target.value.trim())games('All',e.target.value)};
 $('#sur').onclick=()=>{const p=ALL().filter(g=>!g.ext);play(p[Math.random()*p.length|0])};
 fillHome()}

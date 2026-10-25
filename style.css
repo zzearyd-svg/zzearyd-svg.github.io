@@ -405,12 +405,10 @@ body,header,.panel,nav,#bux,.gcard{transition:background-color .4s,border-color 
 /* home: rotating genre word and genre sidebar */
 button.rot{border:0;padding:0;font:inherit;cursor:pointer;text-align:left}
 button.rot:hover{text-decoration:underline;text-decoration-color:var(--a);text-underline-offset:6px}
-/* home: ad space in the empty left margin on wide screens */
-.adv{display:none}
-@media(min-width:1520px){
-.adv{display:flex;flex-direction:column;gap:8px;position:fixed;z-index:4;top:140px;left:calc((100vw - 1100px)/2 - 188px);width:164px;padding:18px 16px;border-radius:18px;font-size:14px;line-height:1.45;color:var(--mu);animation:sba 4s linear infinite,advf 6s ease-in-out infinite}
-.adv b{font:600 16px/1.2 var(--f);color:var(--tx)}
+/* home: ad space (banner on normal screens, floating card in the left margin on wide ones) */
+.adv{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin:0 0 26px;padding:12px 18px;border-radius:14px;font-size:14px;color:var(--mu)}
+.adv b{font:600 15px var(--f);color:var(--tx)}
 .adv a{color:var(--b);overflow-wrap:anywhere}
 .d .adv{display:none}
-}
+@media(min-width:1520px){.adv{flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:8px;position:fixed;z-index:4;top:140px;left:calc((100vw - 1100px)/2 - 188px);width:164px;margin:0;padding:18px 16px;border-radius:18px;line-height:1.45;animation:sba 4s linear infinite,advf 6s ease-in-out infinite}.adv b{font-size:16px;line-height:1.2}}
 @keyframes advf{50%{transform:translateY(-8px)}}

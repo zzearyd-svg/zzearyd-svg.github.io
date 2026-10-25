@@ -71,13 +71,13 @@ const GC={};PG.forEach(g=>g.g.split(',').forEach(x=>x&&(GC[x]=(GC[x]||0)+1)));
 const CHIPS=Object.keys(GC).filter(x=>x!='mobile').sort((a,b)=>GC[b]-GC[a]).slice(0,24),PER=()=>+S.per||120;
 let chip='All',shown=PER();
 
-const card=g=>{const pg=/^(pg|gm):/.test(g.id),tag=pg?(g.g.split(',')[0]||'').replace(/-/g,' '):g.ext?'Link':g.d=='Custom game'?'Custom':'Classic',
+const card=g=>{const pg=g.id.startsWith('pg:'),tag=pg?(g.g.split(',')[0]||'').replace(/-/g,' '):g.ext?'Link':g.d=='Custom game'?'Custom':'Classic',
 img=g.img&&S.thumbs?`<img src="${esc(g.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onload="this.classList.add('ok')" onerror="this.remove()">`:'';
 const a=mk('button','card'+(pg?'':' cl'),`<span class="thumb">${ico(g.i||'gamepad',30,'fb')}${img}${tag?`<i class="tag">${esc(tag)}</i>`:''}</span>${g.ext?'':`<span class="hrt${S.fav.includes(g.id)?' on':''}">${ico('heart',15)}</span>`}<b>${esc(g.name)}</b><small>${esc(g.d)}</small>`);
 a.onclick=e=>{const h=e.target.closest('.hrt');if(h)return toggleFav(g.id,h);g.ext?open(g.url,'_blank','noopener'):play(g)};fx(a);return a};
 let IO;
 function games(c0,q0){if(c0)chip=c0;const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
-const CH=[['All','All','All'],['Favorites',ico('heart',15)+' Favorites','Favorites'],['Recent',ico('clock',15)+' Recent','Recent'],['Mobile',ico('phone',15)+' Phone-ready','Phone-ready'],['Classics','Classics','Classics'],['GM','GameMonetize','GameMonetize'],...CHIPS.map(x=>{const n=x.replace(/-/g,' ');return[x,n,n]})];
+const CH=[['All','All','All'],['Favorites',ico('heart',15)+' Favorites','Favorites'],['Recent',ico('clock',15)+' Recent','Recent'],['Mobile',ico('phone',15)+' Phone-ready','Phone-ready'],['Classics','Classics','Classics'],...CHIPS.map(x=>{const n=x.replace(/-/g,' ');return[x,n,n]})];
 v.innerHTML=`<section class="hero"><h1>${S.discreet?'Files':'Play <span class="rot" id="rot"></span>'}</h1><p class="sub"><b id="cnt">0</b> games ready<button class="surp sb" id="sur">${ico('dice',16)} Surprise me</button></p></section><div class="row top"><input id="q" placeholder="Search games (press / )" autocomplete="off"><select id="so">${[['pop','Popular'],['az','A to Z'],['za','Z to A'],['shuf','Shuffle']].map(o=>`<option value="${o[0]}"${S.sort==o[0]?' selected':''}>${o[1]}</option>`).join('')}</select></div><div class="chips">${CH.map(c=>`<button data-c="${c[0]}" class="${c[0]==chip?'on':''}">${c[1]}</button>`).join('')}</div><section id="cw" hidden><h2 class="sh">Continue playing</h2><div class="strip" id="st"></div></section><p class="rc" id="rc"></p><div class="grid" id="g"></div><button class="btn" id="more">Show more</button>`;
 if(q0!=null){const i=$('#q');i.value=q0;i.focus()}
 v.querySelector('.hero').insertAdjacentHTML('afterbegin','<button class="surp bk" id="bk">'+ico('chevl',14)+' All games</button>');$('#bk').onclick=()=>go('games');
@@ -85,7 +85,7 @@ const all=ALL(),rk=new Map(all.map(g=>[g.id,Math.random()])),real=all.filter(g=>
 if($('#rot'))RT=S.calm?($('#rot').textContent='games',0):rotText($('#rot'),['puzzles','racers','shooters','idle games','arcade hits','3D worlds'],2200);
 countUp($('#cnt'),real.length);
 let list=[],rendered=0;
-const ok=g=>!(S.mobonly&&g.id.startsWith('pg:')&&!g.m)&&(chip=='All'||(chip=='Favorites'?S.fav.includes(g.id):chip=='Recent'?S.recent.includes(g.id):chip=='Mobile'?!!g.m:chip=='GM'?g.id.startsWith('gm:'):chip=='Classics'?!/^(pg|gm):/.test(g.id):(g.g||'').split(',').includes(chip)));
+const ok=g=>!(S.mobonly&&g.id.startsWith('pg:')&&!g.m)&&(chip=='All'||(chip=='Favorites'?S.fav.includes(g.id):chip=='Recent'?S.recent.includes(g.id):chip=='Mobile'?!!g.m:chip=='Classics'?!g.id.startsWith('pg:'):(g.g||'').split(',').includes(chip)));
 
 const more=()=>{const g=$('#g');list.slice(rendered,shown).forEach((x,k)=>{const c=card(x);c.style.animationDelay=Math.min(k,28)*18+'ms';g.append(c)});rendered=Math.min(shown,list.length);$('#more').hidden=rendered>=list.length;$('#more').textContent='Show more ('+(list.length-rendered)+' left)'};
 const fill=()=>{while(!$('#more').hidden&&$('#more').getBoundingClientRect().top<innerHeight+800){shown+=PER();more()}};
@@ -303,23 +303,15 @@ document.querySelectorAll('#nav button').forEach(b=>b.insertAdjacentHTML('afterb
 $('#ps').innerHTML=ico('chevdown',14)+' Show bar';$('#stf').onclick=()=>go('admin');
 let ly=0;addEventListener('scroll',()=>{const y=scrollY,hd=$('header');if(y>90&&y>ly+6)hd.classList.add('hide');else if(y<ly-6||y<=90)hd.classList.remove('hide');ly=y},{passive:true});
 let lc=0,lt;$('#logo').onclick=()=>{clearTimeout(lt);if(++lc>=5){lc=0;go('corner')}else lt=setTimeout(()=>lc=0,1500)};
-/* Home rails, GameMonetize feed and video, forums */
-let GM=[],FCH='general',FT,FLAST='';
-const ALL=()=>[...S.custom.map(c=>({id:c.url,name:c.name,i:'globe',d:'Custom game',url:c.url})),...PG,...GM,...GAMES],
-GMURL='https://gamemonetize.com/feed.php?format=0&num=50&page=1',
-slug=s=>String(s||'').toLowerCase().trim().replace(/\s+/g,'-'),
-cap=s=>s.replace(/-/g,' ').replace(/^./,c=>c.toUpperCase()),
-gmMap=a=>(Array.isArray(a)?a:[]).filter(x=>x&&x.id&&x.title&&/^https:\/\//.test(x.url)).map(x=>({id:'gm:'+x.id,name:String(x.title).trim(),g:[...new Set([x.category,...String(x.tags||'').split(',')].map(slug).filter(Boolean))].slice(0,3).join(','),d:String(x.category||'Arcade'),img:/^https:\/\//.test(x.thumb||'')?x.thumb:'',m:1,url:x.url}));
-async function loadGM(){try{const c=JSON.parse(sessionStorage.nd_gm||'null');if(c&&Date.now()-c.t<36e5){GM=gmMap(c.d);return}}catch(e){}
-let d;try{d=await(await fetch(GMURL)).json()}catch(e){try{d=await api('/feed?page=1',0,0)}catch(x){return}}
-GM=gmMap(d);try{sessionStorage.nd_gm=JSON.stringify({t:Date.now(),d})}catch(e){}}
-const GMP=loadGM();
-function gmVideo(){const f=$('');if(!f)return;f.srcdoc='<!doctype html><body style="margin:0;background:#000"><div id="gamemonetize-video"></div><script>window.VIDEO_OPTIONS={gameid:"4kci7og3klgj0ivy2wz3gdvd9dth5e7n",width:"100%",height:"480px",color:"#3f007e",getAds:"false"};(function(a,b,c){var d=a.getElementsByTagName(b)[0];a.getElementById(c)||(a=a.createElement(b),a.id=c,a.src="https://api.gamemonetize.com/video.js",d.parentNode.insertBefore(a,d))})(document,"script","gamemonetize-video-api");<\/script>'}
-function fillHome(){if(!$('#r1'))return;const a=ALL().filter(g=>!g.ext),pg=a.filter(g=>g.id.startsWith('pg:')),gm=a.filter(g=>g.id.startsWith('gm:')),cl=a.filter(g=>!/^(pg|gm):/.test(g.id)&&g.d!='Custom game');
-const pop=[],L=[pg,gm,cl];for(let i=0;pop.length<30&&i<40;i++)L.forEach(l=>l[i]&&pop.length<30&&pop.push(l[i]));
+/* Home rails and forums */
+try{sessionStorage.removeItem('nd_gm')}catch(e){}
+let FCH='general',FT,FLAST='';
+const ALL=()=>[...S.custom.map(c=>({id:c.url,name:c.name,i:'globe',d:'Custom game',url:c.url})),...PG,...GAMES],
+cap=s=>s.replace(/-/g,' ').replace(/^./,c=>c.toUpperCase());
+function fillHome(){if(!$('#r1'))return;const a=ALL().filter(g=>!g.ext),pg=a.filter(g=>g.id.startsWith('pg:')),cl=a.filter(g=>!g.id.startsWith('pg:')&&g.d!='Custom game');
+const pop=[],L=[pg,cl];for(let i=0;pop.length<30&&i<40;i++)L.forEach(l=>l[i]&&pop.length<30&&pop.push(l[i]));
 const rec=S.cont?S.recent.map(id=>a.find(g=>g.id==id)).filter(Boolean):[],R=[['Popular',pop,'All',1,a.length]];
 if(rec.length)R.push(['Continue playing',rec.slice(0,20),'Recent',0,rec.length]);
-if(gm.length)R.push(['Fresh from GameMonetize',gm.slice(0,30),'GM',0,gm.length]);
 const gc={};a.forEach(g=>(g.g||'').split(',').forEach(x=>x&&x!='mobile'&&(gc[x]=(gc[x]||0)+1)));
 Object.keys(gc).filter(x=>gc[x]>=10).sort((x,y)=>gc[y]-gc[x]).slice(0,10).forEach(x=>{const l=a.filter(g=>(g.g||'').split(',').includes(x));R.push([cap(x),l.slice(0,30),x,0,l.length])});
 if(cl.length)R.push(['Classics',cl,'Classics',0,cl.length]);
@@ -329,10 +321,10 @@ r[1].forEach(g=>rl.append(card(g)));s.querySelector('.va').onclick=()=>{chip=r[2
 ab[0].onclick=()=>rl.scrollBy({left:-rl.clientWidth*.8,behavior:'smooth'});ab[1].onclick=()=>rl.scrollBy({left:rl.clientWidth*.8,behavior:'smooth'});el.append(s)})};
 put($('#r1'),R.slice(0,2));put($('#r2'),R.slice(2))}
 function home(){chip='All';const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
-v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="Search games (press / )" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><div id="r1"></div><section class="vid panel"><div class="vh"><h2 class="sh">Watch before you play</h2><small>Game walkthroughs from GameMonetize</small></div><iframe id="gmv" title="Game walkthroughs" sandbox="allow-scripts allow-popups allow-presentation allow-forms" allow="fullscreen;autoplay" loading="lazy"></iframe></section><div id="r2"></div>`;
+v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="Search games (press / )" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><div id="r1"></div><div id="r2"></div>`;
 $('#q').oninput=e=>{if(e.target.value.trim())games('All',e.target.value)};
 $('#sur').onclick=()=>{const p=ALL().filter(g=>!g.ext);play(p[Math.random()*p.length|0])};
-fillHome();gmVideo();GMP.then(fillHome)}
+fillHome()}
 const FC=[['general','General','Chat about anything'],['games','Game talk','Tips, scores and recommendations'],['help','Help and bugs','Something broken? Ask here'],['news','News','Updates from the team']],
 ago=t=>{const s=(Date.now()-t)/1000|0;return s<60?'just now':s<3600?(s/60|0)+'m ago':s<86400?(s/3600|0)+'h ago':new Date(t).toLocaleDateString()};
 function forum(){const v=$('#view');
@@ -351,4 +343,4 @@ v.querySelector('.fch').onclick=e=>{const b=e.target.closest('[data-c]');if(b){F
 clearInterval(FT);FT=setInterval(()=>document.visibilityState=='visible'&&load(),8000);load(1)}
 
 apply();go('games');
-const hid=decodeURIComponent(location.hash.slice(1));if(hid){const dl=()=>{const g0=ALL().find(x=>x.id==hid);if(g0&&!g0.ext&&$('#player').hidden)play(g0)};dl();if(hid.startsWith('gm:'))GMP.then(dl)}
+const hid=decodeURIComponent(location.hash.slice(1));if(hid){const dl=()=>{const g0=ALL().find(x=>x.id==hid);if(g0&&!g0.ext&&$('#player').hidden)play(g0)};dl()}

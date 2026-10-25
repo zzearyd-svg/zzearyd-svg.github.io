@@ -4,7 +4,7 @@ mk=(t,c,h)=>{const e=document.createElement(t);e.className=c||'';e.innerHTML=h||
 TH={midnight:['#8b6bff','#2fd6f5'],neon:['#ff2bd6','#00ffa3'],sunset:['#ff6b4a','#ffc14a'],forest:['#34d399','#a3e635'],light:['#5b6cff','#00b4d8'],nebula:['#a855f7','#ec4899'],matrix:['#00c853','#39ff7a'],synth:['#ff2a6d','#05d9e8'],ember:['#ff6a00','#ffd000']},THBG={nebula:'galaxy',matrix:'matrix',synth:'dots',ember:'particles'},
 CL={Documents:['Documents','doc'],Classes:['My Classes','grad'],Notes:['Notes','pencil'],Calculator:['Calculator','calc']},
 FORT=['You will beat your high score. Eventually. Probably.','A snack break is in your near future.','The gap in the pipes is bigger than it looks.','Someone is about to message you back.','Today’s lucky number is 2048.','Take a deep breath. Then take another turn.'];
-let S={theme:'midnight',discreet:false,cloak:'Documents',panic:'https://docs.google.com',fx:false,custom:[],best:{},fav:[],recent:[],thumbs:true,cont:true,calm:false,size:'normal',text:'normal',per:'120',sort:'pop',mobonly:false,autobar:false,awake:false,pkey:'`',pbtn:false,ctitle:'',ca:'#8b6bff',cb:'#2fd6f5',time:0,plays:{},bg:'aurora'},stop;
+let S={theme:'midnight',discreet:false,cloak:'Documents',panic:'https://docs.google.com',fx:false,custom:[],best:{},fav:[],recent:[],thumbs:true,cont:true,calm:false,size:'normal',text:'normal',per:'120',sort:'pop',mobonly:false,autobar:false,awake:false,pkey:'`',pbtn:false,ctitle:'',ca:'#8b6bff',cb:'#2fd6f5',time:0,plays:{},bg:'default'},stop;
 try{Object.assign(S,JSON.parse(localStorage.nd))}catch(e){}
 const save=()=>{try{localStorage.nd=JSON.stringify(S)}catch(e){}};
 
@@ -50,13 +50,15 @@ pencil:'<path d="M4 20l1-4L16.5 4.5a2 2 0 0 1 3 3L8 19z"/>',
 calc:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 7.5h7M9 12h.01M12 12h.01M15 12h.01M9 16h.01M12 16h.01M15 16h.01"/>'};
 const ico=(n,s=18,x='')=>`<svg class="ic ${x}" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||IC.gamepad}</svg>`;
 const FAVN='data:image/svg+xml,'+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#8b6bff'/><stop offset='1' stop-color='#2fd6f5'/></linearGradient></defs><rect width='64' height='64' rx='16' fill='url(#g)'/><text x='32' y='46' font-size='38' font-family='Arial' font-weight='700' text-anchor='middle' fill='#fff'>N</text></svg>");
+const BGM=()=>S.bg=='default'?(THBG[S.theme]||'aurora'):S.bg;
 function apply(){const c=CL[S.cloak]||CL.Documents,t=S.ctitle||c[0],cu=S.theme=='custom'&&!S.discreet;
 H.dataset.theme=S.discreet?'docs':S.theme;
 ['--a','--b'].forEach((k,i)=>cu?H.style.setProperty(k,[S.ca,S.cb][i]):H.style.removeProperty(k));
 H.classList.toggle('d',S.discreet);H.classList.toggle('nofx',!S.fx||S.discreet);H.classList.toggle('calm',S.calm);
-H.dataset.size=S.size;H.dataset.text=S.text;H.dataset.bg=S.bg;$('#panic').hidden=!S.pbtn;
+H.dataset.size=S.size;H.dataset.text=S.text;H.dataset.bg=BGM();$('#panic').hidden=!S.pbtn;
 document.title=S.discreet?t:'NullDen';$('#logo').textContent=S.discreet?t:'NullDen';
 $('#fav').href=S.discreet?'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 34 34'><rect x='-5' y='-5' width='34' height='34' rx='7' fill='#fff'/><g fill='none' stroke='#1a73e8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>${IC[c[1]]}</g></svg>`):FAVN;
+const DN={games:'Files',forum:'Shared',shop:'Templates',players:'People',account:'Account',settings:'Settings'};document.querySelectorAll('#nav button').forEach(b=>{const n=b.lastChild;if(n&&n.nodeType==3){b.dataset.o=b.dataset.o||n.textContent;n.textContent=S.discreet?DN[b.dataset.p]:b.dataset.o}});const mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=S.discreet?'#ffffff':'#0a0c1c';
 startBg()}
 function fx(c){c.onmousemove=e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
 c.style.setProperty('--x',x+'px');c.style.setProperty('--y',y+'px');
@@ -78,7 +80,7 @@ a.onclick=e=>{const h=e.target.closest('.hrt');if(h)return toggleFav(g.id,h);g.e
 let IO;
 function games(c0,q0){if(c0)chip=c0;const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
 const CH=[['All','All','All'],['Favorites',ico('heart',15)+' Favorites','Favorites'],['Recent',ico('clock',15)+' Recent','Recent'],['Mobile',ico('phone',15)+' Phone-ready','Phone-ready'],['Classics','Classics','Classics'],...CHIPS.map(x=>{const n=x.replace(/-/g,' ');return[x,n,n]})];
-v.innerHTML=`<section class="hero"><h1>${S.discreet?'Files':'Play <span class="rot" id="rot"></span>'}</h1><p class="sub"><b id="cnt">0</b> games ready<button class="surp sb" id="sur">${ico('dice',16)} Surprise me</button></p></section><div class="row top"><input id="q" placeholder="Search games (press / )" autocomplete="off"><select id="so">${[['pop','Popular'],['az','A to Z'],['za','Z to A'],['shuf','Shuffle']].map(o=>`<option value="${o[0]}"${S.sort==o[0]?' selected':''}>${o[1]}</option>`).join('')}</select></div><div class="chips">${CH.map(c=>`<button data-c="${c[0]}" class="${c[0]==chip?'on':''}">${c[1]}</button>`).join('')}</div><section id="cw" hidden><h2 class="sh">Continue playing</h2><div class="strip" id="st"></div></section><p class="rc" id="rc"></p><div class="grid" id="g"></div><button class="btn" id="more">Show more</button>`;
+v.innerHTML=`<section class="hero"><h1>${S.discreet?'Files':'Play <span class="rot" id="rot"></span>'}</h1><p class="sub"><b id="cnt">0</b> games ready<button class="surp sb" id="sur">${ico('dice',16)} Surprise me</button></p></section><div class="row top"><input id="q" placeholder="${S.discreet?'Search':'Search games (press / )'}" autocomplete="off"><select id="so">${[['pop','Popular'],['az','A to Z'],['za','Z to A'],['shuf','Shuffle']].map(o=>`<option value="${o[0]}"${S.sort==o[0]?' selected':''}>${o[1]}</option>`).join('')}</select></div><div class="chips">${CH.map(c=>`<button data-c="${c[0]}" class="${c[0]==chip?'on':''}">${c[1]}</button>`).join('')}</div><section id="cw" hidden><h2 class="sh">Continue playing</h2><div class="strip" id="st"></div></section><p class="rc" id="rc"></p><div class="grid" id="g"></div><button class="btn" id="more">Show more</button>`;
 if(q0!=null){const i=$('#q');i.value=q0;i.focus()}
 v.querySelector('.hero').insertAdjacentHTML('afterbegin','<button class="surp bk" id="bk">'+ico('chevl',14)+' All games</button>');$('#bk').onclick=()=>go('games');
 const all=ALL(),rk=new Map(all.map(g=>[g.id,Math.random()])),real=all.filter(g=>!g.ext);
@@ -106,7 +108,7 @@ $('#q').oninput=()=>{shown=PER();build()};
 $('#more').onclick=()=>{shown+=PER();more()};
 IO=new IntersectionObserver(es=>{if(es[0].isIntersecting)fill()},{rootMargin:'800px'});IO.observe($('#more'));
 shown=PER();build()}
-function play(g){const st=$('#stage');$('#player').hidden=false;$('#player').classList.remove('min');startEarn();startSession(g);$('#pt').textContent=g.name;if(!g.ext){S.recent=[g.id,...S.recent.filter(x=>x!=g.id)].slice(0,12);save()}$('#pl').onclick=()=>{const u=location.href.split('#')[0]+'#'+encodeURIComponent(g.id);navigator.clipboard&&navigator.clipboard.writeText(u);toast('Link copied')};st.innerHTML='';
+function play(g){const st=$('#stage');$('#player').hidden=false;$('#player').classList.remove('min');startEarn();startSession(g);$('#pt').textContent=S.discreet?(S.ctitle||(CL[S.cloak]||CL.Documents)[0]):g.name;if(!g.ext){S.recent=[g.id,...S.recent.filter(x=>x!=g.id)].slice(0,12);save()}$('#pl').onclick=()=>{const u=location.href.split('#')[0]+'#'+encodeURIComponent(g.id);navigator.clipboard&&navigator.clipboard.writeText(u);toast('Link copied')};st.innerHTML='';
 $('#po').hidden=!g.url;$('#po').onclick=()=>open(g.url,'_blank','noopener');
 if(g.url){const f=mk('iframe');f.src=g.url;f.allow='fullscreen;autoplay;gamepad;accelerometer;gyroscope;clipboard-write;encrypted-media;picture-in-picture';f.setAttribute('sandbox','allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals allow-popups-to-escape-sandbox allow-presentation allow-orientation-lock');st.append(f)}
 else stop=g.run(st,s=>{if(s>(S.best[g.id]||0)){S.best[g.id]=s;save()}})}
@@ -129,7 +131,7 @@ Sl=(k,l,o)=>`<label class="row">${l} <select data-k="${k}">${o.map(x=>`<option v
 hh=S.time/3600|0,mm=S.time%3600/60|0;
 v.innerHTML=`<h1>Settings</h1>
 <div class="panel"><h3>Theme</h3><div class="sw">${[...Object.keys(TH),'custom'].map(t=>`<button data-t="${t}" class="${t==S.theme?'on':''}" style="--a:${t=='custom'?S.ca:TH[t][0]};--b:${t=='custom'?S.cb:TH[t][1]}">${t}</button>`).join('')}</div><div class="row">Custom colors <input type="color" data-k="ca" value="${S.ca}"> <input type="color" data-k="cb" value="${S.cb}"></div></div>
-<div class="panel"><h3>Display</h3>${Sl('size','Card size',[['compact','Compact'],['normal','Normal'],['large','Large']])}${Sl('text','Text size',[['small','Small'],['normal','Normal'],['large','Large']])}${Sl('per','Games per page',[['60','60'],['120','120'],['240','240']])}${Sl('bg','Background',[['aurora','Aurora'],['particles','Particles'],['dots','Dot grid'],['galaxy','Galaxy'],['matrix','Matrix rain'],['none','None']])}${T('thumbs','Show game images')}${T('cont','Show “Continue playing” on the home page')}${T('fx','Animated background, tilt and click sparks')}${T('calm','Reduce motion')}<div class="row"><button id="inst" hidden>Install NullDen as an app</button><small>On iPhone: Share, then Add to Home Screen.</small></div></div>
+<div class="panel"><h3>Display</h3>${Sl('size','Card size',[['compact','Compact'],['normal','Normal'],['large','Large']])}${Sl('text','Text size',[['small','Small'],['normal','Normal'],['large','Large']])}${Sl('per','Games per page',[['60','60'],['120','120'],['240','240']])}${Sl('bg','Background',[['default','Theme default'],['aurora','Aurora'],['particles','Particles'],['dots','Dot grid'],['galaxy','Galaxy'],['matrix','Matrix rain'],['none','None']])}${T('thumbs','Show game images')}${T('cont','Show “Continue playing” on the home page')}${T('fx','Animated background, tilt and click sparks')}${T('calm','Reduce motion')}<div class="row"><button id="inst" hidden>Install NullDen as an app</button><small>On iPhone: Share, then Add to Home Screen.</small></div></div>
 <div class="panel"><h3>Games</h3>${T('mobonly','Only show Playgama games that work on phones')}${T('autobar','Hide the top bar when a game starts')}${T('awake','Keep the screen on while playing')}</div>
 <div class="panel"><h3>Discreet mode</h3>${T('discreet','Plain look, fake tab title and icon, no effects')}${Sl('cloak','Tab disguise',Object.keys(CL).map(c=>[c,c]))}<label class="row">Custom tab title <input data-k="ctitle" value="${esc(S.ctitle)}" maxlength="30" placeholder="Optional"></label><label class="row">Panic key <input id="pk" readonly value="${esc(S.pkey)}" size="6"> <small>click it, then press a key</small></label><label class="row">Panic jumps to <input id="pu" value="${esc(S.panic)}" size="28"></label>${T('pbtn','Show an on-screen panic button')}</div>
 <div class="panel"><h3>Add a game</h3><div class="row"><input id="cn" placeholder="Name"><input id="cu" placeholder="https://example.com/game" size="28"><button class="btn" id="ca">Add game</button></div><small>Works with any page that allows embedding in an iframe.</small>${S.custom.map((c,i)=>`<div class="row"><b>${esc(c.name)}</b><small>${esc(c.url)}</small><button data-x="${i}">Remove</button></div>`).join('')}</div>
@@ -139,7 +141,7 @@ v.innerHTML=`<h1>Settings</h1>
 <div class="panel"><button class="btn" id="rs">Reset everything</button></div>
 <p class="credit">Made by Nathan (zearyd) and some help with Claude :)</p>`;
 const sync=()=>v.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t==S.theme));
-v.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{S.theme=b.dataset.t;if(THBG[S.theme]){S.bg=THBG[S.theme];const bs=v.querySelector('select[data-k=bg]');if(bs)bs.value=S.bg}save();apply();sync()});
+v.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{S.theme=b.dataset.t;if(S.bg!='default'&&THBG[S.theme]){S.bg=THBG[S.theme];const bs=v.querySelector('select[data-k=bg]');if(bs)bs.value=S.bg}save();apply();sync()});
 v.oninput=e=>{const t=e.target,k=t.dataset.k;if(!k)return;S[k]=t.type=='checkbox'?t.checked:t.value;if(k=='ca'||k=='cb')S.theme='custom';save();apply();sync()};
 const pk=$('#pk');pk.onfocus=()=>pk.value='press a key';pk.onblur=()=>pk.value=S.pkey;pk.onkeydown=e=>{e.preventDefault();if(e.key=='Tab'||e.key=='Escape')return pk.blur();S.pkey=e.key;save();pk.blur()};
 $('#pu').onchange=e=>{const u=e.target.value.trim();S.panic=/^https?:\/\//.test(u)?u:'https://'+u;save()};
@@ -149,7 +151,7 @@ if(DEF){$('#inst').hidden=false;$('#inst').onclick=()=>DEF.prompt()}
 const KEYS=['theme','discreet','cloak','panic','fx','custom','best','fav','recent','thumbs','cont','calm','size','text','per','mobonly','autobar','awake','pkey','pbtn','ctitle','ca','cb','time','plays','bg'];
 $('#ex').onclick=()=>{const c=btoa(unescape(encodeURIComponent(JSON.stringify(S))));navigator.clipboard?navigator.clipboard.writeText(c).then(()=>toast('Backup copied')).catch(()=>prompt('Copy your backup code',c)):prompt('Copy your backup code',c)};
 $('#im').onclick=()=>{const c=prompt('Paste your backup code');if(!c)return;try{const d=JSON.parse(decodeURIComponent(escape(atob(c.trim()))));KEYS.forEach(k=>{if(k in d)S[k]=d[k]});
-if(!TH[S.theme]&&S.theme!='custom')S.theme='midnight';if(!['aurora','particles','dots','galaxy','matrix','none'].includes(S.bg))S.bg='aurora';if(!/^https?:\/\//.test(S.panic))S.panic='https://docs.google.com';
+if(!TH[S.theme]&&S.theme!='custom')S.theme='midnight';if(!['default','aurora','particles','dots','galaxy','matrix','none'].includes(S.bg))S.bg='default';if(!/^https?:\/\//.test(S.panic))S.panic='https://docs.google.com';
 S.custom=(Array.isArray(S.custom)?S.custom:[]).filter(x=>x&&typeof x.name=='string'&&/^https?:\/\//.test(x.url));['fav','recent'].forEach(k=>{if(!Array.isArray(S[k]))S[k]=[]});
 ['ca','cb'].forEach(k=>{if(!/^#[0-9a-f]{6}$/i.test(S[k]))S[k]='#8b6bff'});['plays','best'].forEach(k=>{if(!S[k]||typeof S[k]!='object')S[k]={}});S.time=+S.time||0;
 save();apply();settings();toast('Backup restored')}catch(e){toast('That backup code didn’t work')}};
@@ -269,8 +271,8 @@ const bgc=mk('canvas');bgc.id='bgc';document.body.prepend(bgc);
 let BGR=0,BGSIG='',mx=-999,my=-999,rzt;
 addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
 addEventListener('resize',()=>{clearTimeout(rzt);rzt=setTimeout(()=>{BGSIG='';startBg()},250)});
-function startBg(){const sig=[S.bg,S.theme,S.fx,S.calm,S.discreet,S.ca,S.cb].join();if(sig==BGSIG)return;BGSIG=sig;cancelAnimationFrame(BGR);
-const m=S.bg,off=H.classList.contains('nofx')||H.classList.contains('calm')||m=='aurora'||m=='none'||matchMedia('(prefers-reduced-motion:reduce)').matches;
+function startBg(){const sig=[BGM(),S.theme,S.fx,S.calm,S.discreet,S.ca,S.cb].join();if(sig==BGSIG)return;BGSIG=sig;cancelAnimationFrame(BGR);
+const m=BGM(),off=H.classList.contains('nofx')||H.classList.contains('calm')||m=='aurora'||m=='none'||matchMedia('(prefers-reduced-motion:reduce)').matches;
 bgc.style.display=off?'none':'block';if(off)return;
 const d=Math.min(devicePixelRatio||1,innerWidth<700?1:2),W=bgc.width=innerWidth*d,V=bgc.height=innerHeight*d,x=bgc.getContext('2d'),cs=getComputedStyle(H),A=cs.getPropertyValue('--a').trim(),B=cs.getPropertyValue('--b').trim(),R=Math.random,N=innerWidth<700?.5:1;let t=0;
 const MODES={
@@ -323,7 +325,7 @@ r[1].forEach(g=>rl.append(card(g)));s.querySelector('.va').onclick=()=>{chip=r[2
 ab[0].onclick=()=>rl.scrollBy({left:-rl.clientWidth*.8,behavior:'smooth'});ab[1].onclick=()=>rl.scrollBy({left:rl.clientWidth*.8,behavior:'smooth'});el.append(s)})};
 put($('#r1'),R.slice(0,2));put($('#r2'),R.slice(2))}
 function home(){chip='All';const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
-v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play <button class="rot" id="rot" title="Open this genre"></button>'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="Search games (press / )" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><aside class="adv sb" aria-label="Advertising"><b>Ads available</b><span>Contact <a href="mailto:zzearyd@gmail.com">zzearyd@gmail.com</a> for more info</span></aside><div id="r1"></div><div id="r2"></div>`;
+v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play <button class="rot" id="rot" title="Open this genre"></button>'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="${S.discreet?'Search':'Search games (press / )'}" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><aside class="adv sb" aria-label="Advertising"><b>Ads available</b><span>Contact <a href="mailto:zzearyd@gmail.com">zzearyd@gmail.com</a> for more info</span></aside><div id="r1"></div><div id="r2"></div>`;
 $('#q').oninput=e=>{if(e.target.value.trim())games('All',e.target.value)};
 $('#sur').onclick=()=>{const p=ALL().filter(g=>!g.ext);play(p[Math.random()*p.length|0])};
 fillHome()}

@@ -374,10 +374,10 @@ body,header,.panel,nav,#bux,.gcard{transition:background-color .4s,border-color 
 .rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;padding:4px 2px 12px;margin:0 -2px}
 .rail::-webkit-scrollbar{display:none}
 .rail .card{flex:0 0 176px;scroll-snap-align:start}
-.rw.big .card{flex-basis:248px}
+.rw.lg .card{flex-basis:248px}
 .d .rh .ar{display:none}
 @media(hover:none){.rh .ar{display:none}}
-@media(max-width:640px){.rail .card{flex-basis:132px}.rw.big .card{flex-basis:168px}.hs{justify-content:stretch}}
+@media(max-width:640px){.rail .card{flex-basis:132px}.rw.lg .card{flex-basis:168px}.hs{justify-content:stretch}}
 .own.r4{background:#b7791f}.own.r3{background:#c0392b}.own.r2{background:#0f8b8d}.own.r1{background:#3b6fd4}
 .forum{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start}
 .fch{display:flex;flex-direction:column;gap:4px;position:sticky;top:84px}
@@ -434,7 +434,10 @@ html.d{--f:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
 .d .rh{border-bottom:1px solid var(--ln);padding-bottom:8px;margin-bottom:0}
 .d .rh .va{border:0;border-radius:0;padding:0;color:var(--a);margin-left:auto}
 .d .rail{flex-direction:column;overflow:visible;gap:0;padding:0;margin:0}
-.d .rail .card,.d .rw.big .card{flex:none;width:100%}
+.d .rail .card,.d .rw.lg .card{flex:none;width:100%}
 .d .rail .card:nth-child(n+7){display:none}
 .d .card b{min-height:0;display:block;-webkit-line-clamp:unset}
 .d .btn,.d button{border-radius:6px}
+
+button.rot{display:inline-block;vertical-align:baseline;line-height:inherit}
+.bv{opacity:.45;font-size:11px;margin-left:10px}

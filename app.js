@@ -320,7 +320,7 @@ $('#cnt').textContent=a.length.toLocaleString();
 const rt=$('#rot');if(rt&&gl.length){clearInterval(RT);const w=gl.slice(0,12);let i=Math.random()*w.length|0;
 const t=()=>{if(!document.body.contains(rt))return clearInterval(RT);const x=w[i++%w.length];rt.textContent=cap(x);rt.dataset.c=x;rt.classList.remove('in');void rt.offsetWidth;rt.classList.add('in')};
 t();if(!S.calm)RT=setInterval(t,2200);rt.onclick=()=>{chip=rt.dataset.c;games();scrollTo(0,0)}}
-const put=(el,rs)=>{el.innerHTML='';rs.forEach(r=>{const s=mk('section','rw'+(r[3]?' big':''),`<div class="rh"><h2>${esc(r[0])}</h2><small>${r[4].toLocaleString()} games</small><button class="va">View all</button><span class="ar"><button aria-label="Scroll left">${ico('chevl',16)}</button><button aria-label="Scroll right">${ico('chevr',16)}</button></span></div><div class="rail"></div>`),rl=s.querySelector('.rail'),ab=s.querySelectorAll('.ar button');
+const put=(el,rs)=>{el.innerHTML='';rs.forEach(r=>{const s=mk('section','rw'+(r[3]?' lg':''),`<div class="rh"><h2>${esc(r[0])}</h2><small>${r[4].toLocaleString()} games</small><button class="va">View all</button><span class="ar"><button aria-label="Scroll left">${ico('chevl',16)}</button><button aria-label="Scroll right">${ico('chevr',16)}</button></span></div><div class="rail"></div>`),rl=s.querySelector('.rail'),ab=s.querySelectorAll('.ar button');
 r[1].forEach(g=>rl.append(card(g)));s.querySelector('.va').onclick=()=>{chip=r[2];games();scrollTo(0,0)};
 ab[0].onclick=()=>rl.scrollBy({left:-rl.clientWidth*.8,behavior:'smooth'});ab[1].onclick=()=>rl.scrollBy({left:rl.clientWidth*.8,behavior:'smooth'});el.append(s)})};
 put($('#r1'),R.slice(0,2));put($('#r2'),R.slice(2))}

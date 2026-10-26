@@ -450,3 +450,14 @@ button.rot{display:inline-block;vertical-align:baseline;line-height:inherit}
 .sh small{font:400 13px system-ui;margin-left:8px;color:var(--mu)}
 #sc{margin-bottom:18px}
 .show{display:flex;align-items:center;gap:8px;color:var(--mu);margin:2px 0 10px}
+
+/* trades */
+.qty{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px}
+.qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--ln);background:var(--card);cursor:pointer;display:grid;place-items:center}
+.qty button:hover{border-color:var(--a)}
+.ti{display:inline-flex;align-items:center;gap:6px;margin:2px 14px 2px 0}
+.tg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0}
+.tg small{display:block;margin-bottom:2px}
+.tr small{color:var(--mu)}
+@media(max-width:560px){.tg{grid-template-columns:1fr}}
+.qty button{line-height:1;padding:0;font-size:16px}

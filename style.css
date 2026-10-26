@@ -441,3 +441,12 @@ html.d{--f:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
 
 button.rot{display:inline-block;vertical-align:baseline;line-height:inherit}
 .bv{opacity:.45;font-size:11px;margin-left:10px}
+
+/* shop */
+.item{position:relative}
+.item .deal{position:absolute;top:10px;right:10px;font:600 11px system-ui;font-style:normal;background:var(--a);color:#fff;border-radius:99px;padding:2px 8px}
+.item s{opacity:.55;margin-right:2px}
+.item.eq{outline:2px solid var(--a);outline-offset:2px}
+.sh small{font:400 13px system-ui;margin-left:8px;color:var(--mu)}
+#sc{margin-bottom:18px}
+.show{display:flex;align-items:center;gap:8px;color:var(--mu);margin:2px 0 10px}

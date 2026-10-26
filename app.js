@@ -206,7 +206,7 @@ function renderNotes(){const n=$('#notes');if(!n)return;const a=ST.a,g=ST.g;let 
 if(a&&a.id!=(S.ann|0))h+=`<div class="note"><span>${ico('mega',18)} ${esc(a.text)}</span><button data-n="a" title="Dismiss">${ico('x',16)}</button></div>`;
 if(g&&g.ends>Date.now())h+=`<div class="note gift sb"><span>${ico('gift',18)} ${esc(g.title)}: claim <b>${g.amount.toLocaleString()}</b> Nullbux</span>${ME&&ME.gv==g.id?'<small>Claimed</small>':`<button class="btn" data-n="g">${ME?'Claim':'Log in to claim'}</button>`}</div>`;
 n.innerHTML=h;
-n.onclick=async e=>{const k=e.target.dataset.n;if(k=='a'){S.ann=a.id;save();renderNotes()}if(k=='g'){if(!ME)return go('account');try{const j=await api('/giveaway/claim',{});setMe(j.me);toast('+'+j.gain.toLocaleString()+' Nullbux')}catch(x){toast(x.message)}}}}
+n.onclick=async e=>{const k=(e.target.closest('[data-n]')||{dataset:{}}).dataset.n;if(k=='a'){S.ann=a.id;save();renderNotes()}if(k=='g'){if(!ME)return go('account');try{const j=await api('/giveaway/claim',{});setMe(j.me);toast('+'+j.gain.toLocaleString()+' Nullbux')}catch(x){toast(x.message)}}}}
 function players(){const v=$('#view');
 if(!ME){v.innerHTML='<h1>Players</h1><div class="panel"><p>Log in to search players and see their profiles.</p><button class="btn" id="gl">Log in or sign up</button></div>';$('#gl').onclick=()=>go('account');return}
 v.innerHTML='<h1>Players</h1><div class="row"><input id="pq" placeholder="Search usernames" autocomplete="off" maxlength="16"></div><div id="pl" class="plist"></div><div id="pv"></div>';
@@ -300,12 +300,13 @@ addEventListener('click',e=>{if(H.classList.contains('nofx'))return;for(let i=0;
 let run=0;function L(){sx.clearRect(0,0,spk.width,spk.height);sx.lineWidth=2;sx.strokeStyle=getComputedStyle(H).getPropertyValue('--b').trim();P=P.filter(p=>p.l>0);
 P.forEach(p=>{sx.globalAlpha=p.l;sx.beginPath();sx.moveTo(p.x,p.y);sx.lineTo(p.x+p.vx*3,p.y+p.vy*3);sx.stroke();p.x+=p.vx;p.y+=p.vy;p.vx*=.95;p.vy*=.95;p.l-=.04});if(P.length)requestAnimationFrame(L);else run=0}
 
-$('#nav').onclick=e=>e.target.dataset.p&&go(e.target.dataset.p);
+$('#nav').onclick=e=>{const b=e.target.closest('button');b&&go(b.dataset.p)};
 $('#px').onclick=quit;$('#ph').onclick=()=>$('#player').classList.add('min');$('#ps').onclick=()=>$('#player').classList.remove('min');$('#pf').onclick=()=>$('#player').requestFullscreen?.();if(!document.documentElement.requestFullscreen)$('#pf').hidden=true;
 addEventListener('keydown',e=>{if(e.key==S.pkey&&e.target.tagName!='INPUT')location.replace(S.panic);if(e.key=='Escape'&&!$('#player').hidden)quit();if(e.key=='/'&&e.target.tagName!='INPUT'&&$('#q')&&$('#player').hidden){e.preventDefault();$('#q').focus()}});
 document.querySelectorAll('#nav button').forEach(b=>b.insertAdjacentHTML('afterbegin',ico(b.dataset.i,19)));
 [['pr','refresh'],['pl','link'],['ph','chevup'],['po','ext'],['pf','max'],['px','x']].forEach(([id,i])=>{const b=$('#'+id);b.title=b.textContent;b.innerHTML=ico(i,16)+'<span>'+b.textContent+'</span>'});
 $('#ps').innerHTML=ico('chevdown',14)+' Show bar';$('#stf').onclick=()=>go('admin');
+let st;addEventListener('scroll',()=>{document.body.classList.add('scrolling');clearTimeout(st);st=setTimeout(()=>document.body.classList.remove('scrolling'),180)},{passive:true});
 let ly=0;addEventListener('scroll',()=>{const y=scrollY,hd=$('header');if(y>90&&y>ly+6)hd.classList.add('hide');else if(y<ly-6||y<=90)hd.classList.remove('hide');ly=y},{passive:true});
 let lc=0,lt;$('#logo').onclick=()=>{clearTimeout(lt);if(++lc>=5){lc=0;go('corner')}else lt=setTimeout(()=>lc=0,1500)};
 /* Home rails and forums */

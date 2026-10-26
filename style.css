@@ -471,3 +471,16 @@ nav{transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .22s ease,backgrou
 body.scrolling nav{transform:translateY(calc(100% + 16px));opacity:0;pointer-events:none}
 }
 @media(prefers-reduced-motion:reduce){body.scrolling nav{transform:none;opacity:1;pointer-events:auto}}
+
+/* online counter */
+.onl{display:flex;align-items:center;flex-wrap:wrap;margin:0 0 8px;font-size:18px}
+.onl b{font-size:22px}
+.onl small{margin-left:10px;font-size:13px;color:var(--mu)}
+.dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;margin-right:10px;box-shadow:0 0 0 3px #22c55e33}
+
+/* trade badge, keyboard focus, phone forum height */
+#nav button{position:relative}
+#nav button[data-bd]::after{content:attr(data-bd);position:absolute;top:2px;right:4px;min-width:16px;height:16px;padding:0 4px;border-radius:99px;background:#ef4444;color:#fff;font:700 10px/16px system-ui;text-align:center}
+@media(max-width:640px){#nav button[data-bd]::after{right:calc(50% - 22px)}}
+:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+@media(max-width:760px){.fmain{height:calc(100dvh - 360px);min-height:320px}}

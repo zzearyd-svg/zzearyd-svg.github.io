@@ -484,3 +484,31 @@ body.scrolling nav{transform:translateY(calc(100% + 16px));opacity:0;pointer-eve
 @media(max-width:640px){#nav button[data-bd]::after{right:calc(50% - 22px)}}
 :focus-visible{outline:2px solid var(--a);outline-offset:2px}
 @media(max-width:760px){.fmain{height:calc(100dvh - 360px);min-height:320px}}
+
+/* feedback + report dialogs, forum v2, inbox */
+.dlg{border:1px solid var(--ln);border-radius:20px;background:var(--bg);color:var(--tx);padding:22px;width:min(440px,calc(100vw - 32px))}
+.dlg::backdrop{background:#0009;backdrop-filter:blur(3px)}
+.dlg h3{margin:0 0 14px}
+.dlg label{display:block;margin:0 0 12px;font-size:14px;color:var(--mu)}
+.dlg select,.dlg input,.dlg textarea{display:block;width:100%;margin-top:6px;font:inherit;box-sizing:border-box}
+.dlg textarea{resize:vertical;min-height:96px}
+.dlg .row{margin-top:14px}
+.fmain{position:relative}
+.fhd{padding:12px 18px;border-bottom:1px solid var(--ln);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.fhd small{color:var(--mu)}
+.fnew{position:absolute;left:50%;transform:translateX(-50%);bottom:74px;background:var(--a);color:#fff;border:0;border-radius:99px;padding:6px 14px;font-size:13px;cursor:pointer;box-shadow:0 4px 14px #0006}
+.fct{display:block;padding:0 14px 8px;color:var(--mu)}.fct:empty{display:none}
+.ma{margin-left:auto;display:flex;gap:2px;opacity:.55}
+.msg:hover .ma,.ma:focus-within{opacity:1}
+.ma button{background:none;border:0;color:var(--mu);cursor:pointer;padding:5px;border-radius:6px;display:grid;place-items:center}
+.ma button:hover{color:var(--tx);background:var(--card)}
+.nm{background:none;border:0;padding:0;font:600 inherit system-ui;color:inherit;cursor:pointer}
+.nm:hover{text-decoration:underline}
+.mn{color:var(--b);font-weight:600}
+.msg.mm{background:color-mix(in srgb,var(--a) 12%,transparent);margin:0 -18px;padding-left:18px;padding-right:18px;border-radius:10px}
+.ibx{padding:12px 0;border-top:1px solid var(--ln)}
+.ibx p{margin:4px 0}
+.ibx blockquote{margin:6px 0 0;padding:6px 12px;border-left:3px solid var(--ln);color:var(--mu);font-size:14px;overflow-wrap:anywhere}
+.dot.s{width:7px;height:7px;margin-right:6px;box-shadow:none;vertical-align:middle}
+.onl2{margin-right:10px;color:var(--mu)}
+.dlg{margin:auto;max-height:calc(100dvh - 32px);overflow:auto}

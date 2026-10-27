@@ -512,3 +512,31 @@ body.scrolling nav{transform:translateY(calc(100% + 16px));opacity:0;pointer-eve
 .dot.s{width:7px;height:7px;margin-right:6px;box-shadow:none;vertical-align:middle}
 .onl2{margin-right:10px;color:var(--mu)}
 .dlg{margin:auto;max-height:calc(100dvh - 32px);overflow:auto}
+
+/* controller icon: keep it still and centered inside the spinning ring */
+.spin .gp{animation:none;transform-origin:0 0}
+/* sliding nav pill */
+@media(min-width:641px){nav{position:relative}}
+nav button{position:relative;z-index:1}
+nav .pill{position:absolute;left:0;top:0;border-radius:99px;background:var(--tx);z-index:0;pointer-events:none;opacity:0}
+nav .pill.rdy{transition:transform .4s cubic-bezier(.3,.9,.25,1),width .4s cubic-bezier(.3,.9,.25,1),height .4s,opacity .2s}
+nav button.on,nav button.on:hover{background:none;color:var(--bg)}
+@media(max-width:640px){nav .pill{border-radius:14px;background:color-mix(in srgb,var(--a) 18%,transparent)}nav button.on,nav button.on:hover{color:var(--a)}}
+.d nav .pill{display:none}
+@media(prefers-reduced-motion:reduce){nav .pill.rdy{transition:none}}
+/* sending state, game of the day, achievements */
+.msg.tmpm{opacity:.55}
+.tmpm .ma{visibility:hidden}
+.gotd{display:flex;gap:18px;align-items:center;border:1px solid var(--ln);background:var(--card);border-radius:20px;padding:14px;margin:0 0 28px}
+.gotd img{width:200px;aspect-ratio:16/10;object-fit:cover;border-radius:14px;flex:none;background:var(--ln)}
+.gotd small{color:var(--a);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+.gotd h2{font:600 20px/1.25 var(--f);margin:4px 0 2px}
+.gotd p{color:var(--mu);margin:0 0 12px}
+@media(max-width:560px){.gotd{flex-direction:column;align-items:stretch}.gotd img{width:100%}}
+.d .gotd{display:none}
+.achs{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.ach{border:1px solid var(--ln);border-radius:14px;padding:12px 14px;opacity:.5}
+.ach b{display:block}.ach small{color:var(--mu)}
+.ach.on{opacity:1;border-color:var(--a);background:color-mix(in srgb,var(--a) 10%,transparent)}
+.ach.on b::before{content:'✓ ';color:var(--a)}
+.panel h3 small{font:400 13px system-ui;color:var(--mu);margin-left:8px}

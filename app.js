@@ -56,16 +56,16 @@ H.dataset.theme=S.discreet?'docs':S.theme;
 ['--a','--b'].forEach((k,i)=>cu?H.style.setProperty(k,[S.ca,S.cb][i]):H.style.removeProperty(k));
 H.classList.toggle('d',S.discreet);H.classList.toggle('nofx',!S.fx||S.discreet);H.classList.toggle('calm',S.calm);
 H.dataset.size=S.size;H.dataset.text=S.text;H.dataset.bg=BGM();$('#panic').hidden=!S.pbtn;
-document.title=S.discreet?t:'NullDen';$('#logo').textContent=S.discreet?t:'NullDen';
+document.title=S.discreet?t:'NullDen: Free Online Browser Games, No Download';$('#logo').textContent=S.discreet?t:'NullDen';
 $('#fav').href=S.discreet?'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 34 34'><rect x='-5' y='-5' width='34' height='34' rx='7' fill='#fff'/><g fill='none' stroke='#1a73e8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>${IC[c[1]]}</g></svg>`):FAVN;
-const DN={games:'Files',forum:'Shared',shop:'Templates',players:'People',account:'Account',settings:'Settings'};document.querySelectorAll('#nav button').forEach(b=>{const n=b.lastChild;if(n&&n.nodeType==3){b.dataset.o=b.dataset.o||n.textContent;n.textContent=S.discreet?DN[b.dataset.p]:b.dataset.o}});const mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=S.discreet?'#ffffff':'#0a0c1c';
+const DN={games:'Files',forum:'Shared',shop:'Templates',players:'People',account:'Account',settings:'Settings'};document.querySelectorAll('#nav button').forEach(b=>{const n=b.lastChild;if(n&&n.nodeType==3){b.dataset.o=b.dataset.o||n.textContent;n.textContent=S.discreet?DN[b.dataset.p]:b.dataset.o}});setTimeout(()=>{try{movePill()}catch(e){}});const mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content=S.discreet?'#ffffff':'#0a0c1c';
 startBg()}
 function fx(c){c.onmousemove=e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
 c.style.setProperty('--x',x+'px');c.style.setProperty('--y',y+'px');
 if(!H.classList.contains('nofx'))c.style.transform=`perspective(600px) rotateX(${(y/r.height-.5)*-8}deg) rotateY(${(x/r.width-.5)*8}deg) translateY(-3px)`};
 c.onmouseleave=()=>c.style.transform=''}
 
-function go(p){clearInterval(FT);document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==(p=='trades'?'shop':p)));({games:home,forum,trades,corner,settings,shop,account,players,admin,appeals})[p]();const vw=$('#view');vw.classList.remove('vin');void vw.offsetWidth;vw.classList.add('vin');const h=$('#view h1');if(h&&!h.children.length&&!H.classList.contains('nofx')&&!H.classList.contains('calm'))blurIn(h)}
+function go(p){clearInterval(FT);document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==(p=='trades'?'shop':p)));requestAnimationFrame(()=>{try{movePill()}catch(e){}});({games:home,forum,trades,corner,settings,shop,account,players,admin,appeals})[p]();const vw=$('#view');vw.classList.remove('vin');void vw.offsetWidth;vw.classList.add('vin');const h=$('#view h1');if(h&&!h.children.length&&!H.classList.contains('nofx')&&!H.classList.contains('calm'))blurIn(h)}
 
 const CLID='p_27841169-43c3-4a47-aacd-af9abd43a2a3',IMG='https://static.playgama.com/p-img/pg/',
 PG=typeof CAT!='undefined'?CAT.map(c=>({id:'pg:'+c[0],name:c[1],g:c[3],d:c[3].split(',').slice(0,2).map(s=>s.replace(/-/g,' ')).join(' · '),img:c[2]?IMG+c[2]+'?width=448':'',m:c[4],url:c[5]||'https://playgama.com/export/game/'+c[0]+'?clid='+CLID})):[];
@@ -108,7 +108,7 @@ $('#q').oninput=()=>{shown=PER();build()};
 $('#more').onclick=()=>{shown+=PER();more()};
 IO=new IntersectionObserver(es=>{if(es[0].isIntersecting)fill()},{rootMargin:'800px'});IO.observe($('#more'));
 shown=PER();build()}
-function play(g){const st=$('#stage');$('#player').hidden=false;$('#player').classList.remove('min');startEarn();startSession(g);$('#pt').textContent=S.discreet?(S.ctitle||(CL[S.cloak]||CL.Documents)[0]):g.name;if(!g.ext){S.recent=[g.id,...S.recent.filter(x=>x!=g.id)].slice(0,12);save()}$('#pl').onclick=()=>{const u=location.href.split('#')[0]+'#'+encodeURIComponent(g.id);navigator.clipboard&&navigator.clipboard.writeText(u);toast('Link copied')};st.innerHTML='';
+function play(g){const st=$('#stage');$('#player').hidden=false;$('#player').classList.remove('min');startEarn();startSession(g);$('#pt').textContent=S.discreet?(S.ctitle||(CL[S.cloak]||CL.Documents)[0]):g.name;if(!g.ext){S.recent=[g.id,...S.recent.filter(x=>x!=g.id)].slice(0,12);save()}$('#pl').onclick=()=>{const u=(!g.ext&&API&&/^[A-Za-z0-9:_.\-]{1,120}$/.test(g.id))?API.replace(/\/+$/,'')+'/g?id='+encodeURIComponent(g.id)+'&n='+encodeURIComponent(g.name)+(g.img?'&i='+encodeURIComponent(g.img.split('?')[0]):''):location.href.split('#')[0]+'#'+encodeURIComponent(g.id);navigator.clipboard&&navigator.clipboard.writeText(u);toast('Link copied')};st.innerHTML='';
 $('#pb').onclick=()=>fbDlg({t:'compat',game:g.name});$('#po').hidden=!g.url;$('#po').onclick=()=>open(g.url,'_blank','noopener');
 if(g.url){const f=mk('iframe');f.src=g.url;f.allow='fullscreen;autoplay;gamepad;accelerometer;gyroscope;clipboard-write;encrypted-media;picture-in-picture';f.setAttribute('sandbox','allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals allow-popups-to-escape-sandbox allow-presentation allow-orientation-lock');st.append(f)}
 else stop=g.run(st,s=>{if(s>(S.best[g.id]||0)){S.best[g.id]=s;save()}})}
@@ -135,7 +135,7 @@ v.innerHTML=`<h1>Settings</h1>
 <div class="panel"><h3>Games</h3>${T('mobonly','Only show Playgama games that work on phones')}${T('autobar','Hide the top bar when a game starts')}${T('awake','Keep the screen on while playing')}</div>
 <div class="panel"><h3>Discreet mode</h3>${T('discreet','Plain look, fake tab title and icon, no effects')}${Sl('cloak','Tab disguise',Object.keys(CL).map(c=>[c,c]))}<label class="row">Custom tab title <input data-k="ctitle" value="${esc(S.ctitle)}" maxlength="30" placeholder="Optional"></label><label class="row">Panic key <input id="pk" readonly value="${esc(S.pkey)}" size="6"> <small>click it, then press a key</small></label><label class="row">Panic jumps to <input id="pu" value="${esc(S.panic)}" size="28"></label>${T('pbtn','Show an on-screen panic button')}</div>
 <div class="panel"><h3>Add a game</h3><div class="row"><input id="cn" placeholder="Name"><input id="cu" placeholder="https://example.com/game" size="28"><button class="btn" id="ca">Add game</button></div><small>Works with any page that allows embedding in an iframe.</small>${S.custom.map((c,i)=>`<div class="row"><b>${esc(c.name)}</b><small>${esc(c.url)}</small><button data-x="${i}">Remove</button></div>`).join('')}</div>
-<div class="panel"><h3>Your stats</h3><p>Play time <b>${hh}h ${mm}m</b> · Games played <b>${Object.keys(S.plays).length}</b> · Favorites <b>${S.fav.length}</b></p></div>
+${achPanel()}<div class="panel"><h3>Your stats</h3><p>Play time <b>${hh}h ${mm}m</b> · Games played <b>${Object.keys(S.plays).length}</b> · Favorites <b>${S.fav.length}</b></p></div>
 <div class="panel"><h3>Backup and data</h3><div class="row"><button id="ex">Copy backup</button><button id="im">Restore backup</button><button id="cr">Clear recent</button><button id="cf">Clear favorites</button></div></div>
 <div class="panel"><h3>Shortcuts</h3><p><kbd>/</kbd> search · <kbd>Esc</kbd> close a game · <kbd>${esc(S.pkey)}</kbd> panic</p></div>
 <div class="panel"><button class="btn" id="rs">Reset everything</button></div>
@@ -148,7 +148,7 @@ $('#pu').onchange=e=>{const u=e.target.value.trim();S.panic=/^https?:\/\//.test(
 $('#ca').onclick=()=>{const n=$('#cn').value.trim(),u=$('#cu').value.trim();if(n&&/^https?:\/\//.test(u)){S.custom.push({name:n,url:u});save();settings()}};
 v.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{S.custom.splice(b.dataset.x,1);save();settings()});
 if(DEF){$('#inst').hidden=false;$('#inst').onclick=()=>DEF.prompt()}
-const KEYS=['theme','discreet','cloak','panic','fx','custom','best','fav','recent','thumbs','cont','calm','size','text','per','mobonly','autobar','awake','pkey','pbtn','ctitle','ca','cb','time','plays','bg'];
+const KEYS=['theme','discreet','cloak','panic','fx','custom','best','fav','recent','thumbs','cont','calm','size','text','per','mobonly','autobar','awake','pkey','pbtn','ctitle','ca','cb','time','plays','bg','ach'];
 $('#ex').onclick=()=>{const c=btoa(unescape(encodeURIComponent(JSON.stringify(S))));navigator.clipboard?navigator.clipboard.writeText(c).then(()=>toast('Backup copied')).catch(()=>prompt('Copy your backup code',c)):prompt('Copy your backup code',c)};
 $('#im').onclick=()=>{const c=prompt('Paste your backup code');if(!c)return;try{const d=JSON.parse(decodeURIComponent(escape(atob(c.trim()))));KEYS.forEach(k=>{if(k in d)S[k]=d[k]});
 if(!TH[S.theme]&&S.theme!='custom')S.theme='midnight';if(!['default','aurora','particles','dots','galaxy','matrix','none'].includes(S.bg))S.bg='default';if(!/^https?:\/\//.test(S.panic))S.panic='https://docs.google.com';
@@ -169,7 +169,7 @@ function toggleFav(id,el){const i=S.fav.indexOf(id);i<0?S.fav.push(id):S.fav.spl
 /* Accounts and Nullbux (need the relay: see worker.js) */
 let ME=null,TOK='',EI;try{TOK=localStorage.nd_tok||sessionStorage.nd_tok||''}catch(e){}
 function toast(t){let e=$('#toast');if(!e){e=mk('div');e.id='toast';document.body.append(e)}e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2400)}
-function setMe(m){setTimeout(()=>{try{ping()}catch(e){}});const o=ME?ME.nb:null;ME=m;$('#bux').innerHTML=m?(m.role=='owner'?ico('crown',16)+' ':'')+ico('coin',16)+' '+m.nb.toLocaleString():'Log in';const st=$('#stf');st.hidden=!isStaff(m);st.innerHTML=isStaff(m)?ico('shield',18):'';if(m&&o!==null&&o!==m.nb){const b=$('#bux');b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}renderNotes()}
+function setMe(m){setTimeout(()=>{try{ping();dailyDot();checkAch()}catch(e){}});const o=ME?ME.nb:null;ME=m;$('#bux').innerHTML=m?(m.role=='owner'?ico('crown',16)+' ':'')+ico('coin',16)+' '+m.nb.toLocaleString():'Log in';const st=$('#stf');st.hidden=!isStaff(m);st.innerHTML=isStaff(m)?ico('shield',18):'';if(m&&o!==null&&o!==m.nb){const b=$('#bux');b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}renderNotes()}
 async function api(p,b,auth=1){if(!API)throw new Error('Accounts are not set up on this site yet.');
 const r=await fetch(API.replace(/\/+$/,'')+p,{method:b?'POST':'GET',headers:{...(b?{'content-type':'application/json'}:{}),...(TOK&&auth?{authorization:'Bearer '+TOK}:{})},body:b?JSON.stringify(b):undefined});
 const j=await r.json().catch(()=>({}));if(!r.ok){const e=new Error(j.error||'Something went wrong');e.needKey=j.needKey;e.banned=j.banned;throw e}return j}
@@ -319,7 +319,7 @@ let ly=0;addEventListener('scroll',()=>{const y=scrollY,hd=$('header');if(y>90&&
 let lc=0,lt;$('#logo').onclick=()=>{clearTimeout(lt);if(++lc>=5){lc=0;go('corner')}else lt=setTimeout(()=>lc=0,1500)};
 /* Home rails and forums */
 try{sessionStorage.removeItem('nd_gm')}catch(e){}
-let FCH='general',FT,FLAST='';
+let FCH='general',FT,FLAST='',PM=[],LM=[];
 const ALL=()=>[...S.custom.map(c=>({id:c.url,name:c.name,i:'globe',d:'Custom game',url:c.url})),...PG,...GAMES],
 cap=s=>s.replace(/-/g,' ').replace(/^./,c=>c.toUpperCase());
 function fillHome(){if(!$('#r1'))return;const a=ALL().filter(g=>!g.ext),pg=a.filter(g=>g.id.startsWith('pg:'));
@@ -329,6 +329,8 @@ if(rec.length)R.push(['Continue playing',rec.slice(0,20),'Recent',0,rec.length])
 const gc={};a.forEach(g=>(g.g||'').split(',').forEach(x=>x&&x!='mobile'&&(gc[x]=(gc[x]||0)+1)));
 const gl=Object.keys(gc).filter(x=>gc[x]>=10).sort((x,y)=>gc[y]-gc[x]);gl.slice(0,10).forEach(x=>{const l=a.filter(g=>(g.g||'').split(',').includes(x));R.push([cap(x),l.slice(0,30),x,0,l.length])});
 $('#cnt').textContent=a.length.toLocaleString();
+{const c=(pg.length?pg:a).filter(g=>g.img),dt=new Date(),k=dt.getFullYear()*372+dt.getMonth()*31+dt.getDate(),g=c[(Math.imul(k,2654435761)>>>0)%(c.length||1)];
+if(g&&$('#gotd')){$('#gotd').innerHTML=`<div class="gotd"><img src="${esc(g.img)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()"><div><small>Game of the day</small><h2>${esc(g.name)}</h2><p>${esc(g.d||'')}</p><button class="btn" id="gpl">Play now</button></div></div>`;$('#gpl').onclick=()=>play(g)}}
 const rt=$('#rot');if(rt&&gl.length){clearInterval(RT);const w=gl.slice(0,12);let i=Math.random()*w.length|0;
 const t=()=>{if(!document.body.contains(rt))return clearInterval(RT);const x=w[i++%w.length];rt.textContent=cap(x);rt.dataset.c=x;rt.classList.remove('in');void rt.offsetWidth;rt.classList.add('in')};
 t();if(!S.calm)RT=setInterval(t,2200);rt.onclick=()=>{chip=rt.dataset.c;games();scrollTo(0,0)}}
@@ -337,7 +339,7 @@ r[1].forEach(g=>rl.append(card(g)));s.querySelector('.va').onclick=()=>{chip=r[2
 ab[0].onclick=()=>rl.scrollBy({left:-rl.clientWidth*.8,behavior:'smooth'});ab[1].onclick=()=>rl.scrollBy({left:rl.clientWidth*.8,behavior:'smooth'});el.append(s)})};
 put($('#r1'),R.slice(0,2));put($('#r2'),R.slice(2))}
 function home(){chip='All';const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
-v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play <button class="rot" id="rot" title="Open this genre"></button>'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="${S.discreet?'Search':(matchMedia('(hover:none)').matches?'Search games':'Search games (press / )')}" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><aside class="adv sb" aria-label="Advertising"><b>Ads available</b><span>Contact <a href="mailto:zzearyd@gmail.com">zzearyd@gmail.com</a> for more info</span></aside><div id="r1"></div><div id="r2"></div>`;
+v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play <button class="rot" id="rot" title="Open this genre"></button>'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="${S.discreet?'Search':(matchMedia('(hover:none)').matches?'Search games':'Search games (press / )')}" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><aside class="adv sb" aria-label="Advertising"><b>Ads available</b><span>Contact <a href="mailto:zzearyd@gmail.com">zzearyd@gmail.com</a> for more info</span></aside><div id="gotd"></div><div id="r1"></div><div id="r2"></div>`;
 $('#q').oninput=e=>{if(e.target.value.trim())games('All',e.target.value)};
 $('#sur').onclick=()=>{const p=ALL().filter(g=>!g.ext);play(p[Math.random()*p.length|0])};
 fillHome()}let TT='';
@@ -368,14 +370,16 @@ function reportDlg(kind,ref,who){if(!ME){toast('Log in to report');return go('ac
 dlg('Report '+esc(who),`<label>Reason<select id="rw">${['Spam','Harassment or hate','Inappropriate content','Scam or trade abuse','Cheating','Other'].map(x=>`<option>${x}</option>`).join('')}</select></label><label>Details (optional)<textarea id="rm" maxlength="300"></textarea></label><small>Reports go to staff. Misusing reports can get you banned.</small>`,'Send report',async d=>{await api('/report',{kind,ref,why:d.querySelector('#rw').value,m:d.querySelector('#rm').value});toast('Report sent. Thank you')})}
 function forum(){const v=$('#view');
 if(!ME){v.innerHTML='<h1>Forums</h1><div class="panel"><p>Log in to read and post.</p><button class="btn" id="gl">Log in or sign up</button></div>';$('#gl').onclick=()=>go('account');return}
-const ch=FC.find(c=>c[0]==FCH)||FC[0],mn=t=>esc(t).replace(/@([a-z0-9_]{3,16})/gi,'<span class="mn">@$1</span>');
+LM=[];const ch=FC.find(c=>c[0]==FCH)||FC[0],mn=t=>esc(t).replace(/@([a-z0-9_]{3,16})/gi,'<span class="mn">@$1</span>');
 v.innerHTML=`<h1>Forums</h1><div class="forum"><div class="fch">${FC.map(c=>`<button data-c="${c[0]}" class="${c[0]==FCH?'on':''}"><b>${c[1]}</b><small>${c[2]}</small></button>`).join('')}</div><section class="fmain"><div class="fhd"><b>${ch[1]}</b><small>Be kind. Use the flag to report problems.</small></div><div class="fmsgs" id="fm" aria-live="polite"></div><button class="fnew" id="fn" hidden>New messages ↓</button><div class="fcomp"><input id="fi" maxlength="240" placeholder="Message ${esc(ch[1])}" autocomplete="off" aria-label="Message"><button class="btn" id="fs">Send</button></div><small class="fct" id="fc"></small></section></div>`;
-const m=$('#fm'),load=async force=>{if(!$('#fm'))return clearInterval(FT);
-try{const j=await api('/forum?c='+FCH),sig=j.msgs.map(x=>x.k).join();$('#fi').disabled=$('#fs').disabled=!j.canPost;if(!j.canPost)$('#fi').placeholder='Only managers and above can post in '+ch[1];
-if(sig==FLAST&&!force)return;FLAST=sig;const near=m.scrollHeight-m.scrollTop-m.clientHeight<80;
-m.innerHTML=j.msgs.length?j.msgs.map(x=>`<div class="msg${x.m.toLowerCase().includes('@'+ME.u)?' mm':''}"><i class="av" style="--h:${Math.abs([...x.u].reduce((h,c)=>h*31+c.charCodeAt(0)|0,7))%360}">${esc(x.u[0])}</i><div><div class="mh"><button class="nm" data-u="${esc(x.u)}">${esc(x.u)}</button>${badge(x.r)}<small>${ago(x.t)}</small><span class="ma"><button data-re="${esc(x.u)}" title="Reply" aria-label="Reply">${ico('reply',14)}</button>${x.u!=ME.u?`<button data-rp="${esc(x.k)}" data-w="${esc(x.u)}" title="Report" aria-label="Report">${ico('flag',14)}</button>`:''}${isStaff(ME)?`<button data-d="${esc(x.k)}" title="Delete post" aria-label="Delete">${ico('trash',14)}</button>`:''}</span></div><p>${mn(x.m)}</p></div></div>`).join(''):'<p class="fe">No messages yet. Start the conversation.</p>';
-if(near||force){m.scrollTop=m.scrollHeight;$('#fn').hidden=true}else $('#fn').hidden=false}catch(e){m.innerHTML='<p class="fe">'+esc(e.message)+'</p>'}};
-const send=async()=>{const i=$('#fi'),t=i.value.trim();if(!t)return;i.value='';$('#fc').textContent='';try{await api('/forum/post',{c:FCH,m:t});load(1)}catch(e){i.value=t;toast(e.message)}};
+const m=$('#fm'),render=force=>{const now=Date.now();PM=PM.filter(p=>p.c==FCH&&now-p.t<9e4&&!LM.some(x=>x.u==p.u&&x.m==p.m&&Math.abs(x.t-p.t)<12e4));
+const all=[...LM,...PM.map((p,i)=>({k:'tmp'+i,u:p.u,r:p.r,t:p.t,m:p.m,tmp:1}))],sig=all.map(x=>x.k).join();if(sig==FLAST&&!force)return;FLAST=sig;
+const near=m.scrollHeight-m.scrollTop-m.clientHeight<80;
+m.innerHTML=all.length?all.map(x=>`<div class="msg${x.tmp?' tmpm':''}${x.m.toLowerCase().includes('@'+ME.u)?' mm':''}"><i class="av" style="--h:${Math.abs([...x.u].reduce((h,c)=>h*31+c.charCodeAt(0)|0,7))%360}">${esc(x.u[0])}</i><div><div class="mh"><button class="nm" data-u="${esc(x.u)}">${esc(x.u)}</button>${badge(x.r)}<small>${ago(x.t)}</small><span class="ma"><button data-re="${esc(x.u)}" title="Reply" aria-label="Reply">${ico('reply',14)}</button>${x.u!=ME.u?`<button data-rp="${esc(x.k)}" data-w="${esc(x.u)}" title="Report" aria-label="Report">${ico('flag',14)}</button>`:''}${isStaff(ME)?`<button data-d="${esc(x.k)}" title="Delete post" aria-label="Delete">${ico('trash',14)}</button>`:''}</span></div><p>${mn(x.m)}</p></div></div>`).join(''):'<p class="fe">No messages yet. Start the conversation.</p>';
+if(near||force){m.scrollTop=m.scrollHeight;$('#fn').hidden=true}else $('#fn').hidden=false},
+load=async force=>{if(!$('#fm'))return clearInterval(FT);
+try{const j=await api('/forum?c='+FCH);LM=j.msgs;$('#fi').disabled=$('#fs').disabled=!j.canPost;if(!j.canPost)$('#fi').placeholder='Only managers and above can post in '+ch[1];render(force)}catch(e){m.innerHTML='<p class="fe">'+esc(e.message)+'</p>'}};
+const send=async()=>{const i=$('#fi'),t=i.value.trim();if(!t)return;i.value='';$('#fc').textContent='';const p={c:FCH,u:ME.u,r:ME.role||'',t:Date.now(),m:t};PM.push(p);render(1);try{await api('/forum/post',{c:FCH,m:t});setTimeout(load,1200);setTimeout(load,3500)}catch(e){PM=PM.filter(x=>x!==p);i.value=t;toast(e.message);render(1)}};
 $('#fs').onclick=send;$('#fi').onkeydown=e=>{if(e.key=='Enter')send()};$('#fi').oninput=()=>{const n=$('#fi').value.length;$('#fc').textContent=n>180?(240-n)+' characters left':''};
 $('#fn').onclick=()=>{m.scrollTop=m.scrollHeight;$('#fn').hidden=true};m.onscroll=()=>{if(m.scrollHeight-m.scrollTop-m.clientHeight<80)$('#fn').hidden=true};
 m.onclick=async e=>{const t=e.target,d=t.closest('[data-d]'),re=t.closest('[data-re]'),rp=t.closest('[data-rp]'),nm=t.closest('.nm');
@@ -389,5 +393,15 @@ clearInterval(FT);FT=setInterval(()=>document.visibilityState=='visible'&&load()
 {const f=$('#fbl');if(f)f.onclick=e=>{e.preventDefault();fbDlg()}}
 let lp=0,bdN=0;const setBd=(n,quiet)=>{const b=document.querySelector('#nav [data-p=shop]');if(!b)return;n?b.dataset.bd=n:delete b.dataset.bd;if(n>bdN&&!quiet)toast('You have '+n+' trade offer'+(n>1?'s':'')+' waiting');bdN=n};
 const ping=()=>{if(ME&&document.visibilityState=='visible'&&Date.now()-lp>24e4){lp=Date.now();api('/ping',{}).then(j=>setBd(j.tr||0)).catch(()=>{})}};setInterval(ping,6e4);addEventListener('visibilitychange',ping);ping();
+const pill=document.createElement('i');pill.className='pill';$('#nav').prepend(pill);
+const movePill=()=>{const b=$('#nav .on');if(!b){pill.style.opacity=0;return}pill.style.opacity=1;pill.style.width=b.offsetWidth+'px';pill.style.height=b.offsetHeight+'px';pill.style.transform='translate('+b.offsetLeft+'px,'+b.offsetTop+'px)'};
+addEventListener('resize',movePill);if(document.fonts)document.fonts.ready.then(movePill);setTimeout(()=>pill.classList.add('rdy'),400);
+const ACH=[['first','First steps','Play your first game',()=>Object.keys(S.plays).length>=1],['ten','Explorer','Play 10 different games',()=>Object.keys(S.plays).length>=10],['fifty','Globetrotter','Play 50 different games',()=>Object.keys(S.plays).length>=50],
+['hour','Hooked','Play for 1 hour in total',()=>S.time>=3600],['ten_h','Marathon','Play for 10 hours in total',()=>S.time>=36e3],['fav','Collector','Favorite 5 games',()=>S.fav.length>=5],
+['loop','Replayer','Play one game 10 times',()=>Math.max(0,...Object.values(S.plays))>=10],['acct','Official','Create an account',()=>!!ME],['rich','Stacked','Hold 1,000 Nullbux',()=>!!ME&&ME.nb>=1e3],['inv','Hoarder','Own 10 different shop items',()=>!!ME&&Object.keys(ME.inv).length>=10]];
+function checkAch(){if(!Array.isArray(S.ach))S.ach=[];const n=ACH.filter(a=>!S.ach.includes(a[0])&&a[3]());if(n.length){n.forEach(a=>S.ach.push(a[0]));save();toast(n.length>1?n.length+' achievements unlocked':'Achievement unlocked: '+n[0][1])}}
+function achPanel(){const g=Array.isArray(S.ach)?S.ach:[];return`<div class="panel"><h3>Achievements <small>${g.length} of ${ACH.length}</small></h3><div class="achs">${ACH.map(a=>`<div class="ach${g.includes(a[0])?' on':''}"><b>${a[1]}</b><small>${a[2]}</small></div>`).join('')}</div></div>`}
+function dailyDot(){const b=document.querySelector('#nav [data-p=account]');if(b){ME&&ME.canDaily?b.dataset.bd='!':delete b.dataset.bd}}
+setInterval(checkAch,2e4);
 apply();go('games');
 const hid=decodeURIComponent(location.hash.slice(1));if(hid){const dl=()=>{const g0=ALL().find(x=>x.id==hid);if(g0&&!g0.ext&&$('#player').hidden)play(g0)};dl()}

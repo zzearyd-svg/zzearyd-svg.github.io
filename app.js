@@ -73,13 +73,13 @@ const GC={};PG.forEach(g=>g.g.split(',').forEach(x=>x&&(GC[x]=(GC[x]||0)+1)));
 const CHIPS=Object.keys(GC).filter(x=>x!='mobile').sort((a,b)=>GC[b]-GC[a]).slice(0,24),PER=()=>+S.per||120;
 let chip='All',shown=PER();
 
-const card=g=>{const pg=g.id.startsWith('pg:'),tag=pg?(g.g.split(',')[0]||'').replace(/-/g,' '):g.ext?'Link':g.d=='Custom game'?'Custom':'Classic',
+const card=g=>{const pg=/^(pg|gm):/.test(g.id),tag=pg?(g.g.split(',')[0]||'').replace(/-/g,' '):g.ext?'Link':g.d=='Custom game'?'Custom':'Classic',
 img=g.img&&S.thumbs?`<img src="${esc(g.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onload="this.classList.add('ok')" onerror="this.remove()">`:'';
 const a=mk('button','card'+(pg?'':' cl'),`<span class="thumb">${ico(g.i||'gamepad',30,'fb')}${img}${tag?`<i class="tag">${esc(tag)}</i>`:''}</span>${g.ext?'':`<span class="hrt${S.fav.includes(g.id)?' on':''}">${ico('heart',15)}</span>`}<b>${esc(g.name)}</b><small>${esc(g.d)}</small>`);
 a.onclick=e=>{const h=e.target.closest('.hrt');if(h)return toggleFav(g.id,h);g.ext?open(g.url,'_blank','noopener'):play(g)};fx(a);return a};
 let IO;
 function games(c0,q0){if(c0)chip=c0;const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
-const CH=[['All','All','All'],['Favorites',ico('heart',15)+' Favorites','Favorites'],['Recent',ico('clock',15)+' Recent','Recent'],['Mobile',ico('phone',15)+' Phone-ready','Phone-ready'],['Classics','Classics','Classics'],...CHIPS.map(x=>{const n=x.replace(/-/g,' ');return[x,n,n]})];
+const CH=[['All','All','All'],['Favorites',ico('heart',15)+' Favorites','Favorites'],['Recent',ico('clock',15)+' Recent','Recent'],['Mobile',ico('phone',15)+' Phone-ready','Phone-ready'],['Classics','Classics','Classics'],['GM','GameMonetize','GameMonetize'],...CHIPS.map(x=>{const n=x.replace(/-/g,' ');return[x,n,n]})];
 v.innerHTML=`<section class="hero"><h1>${S.discreet?'Files':'Play <span class="rot" id="rot"></span>'}</h1><p class="sub"><b id="cnt">0</b> games ready<button class="surp sb" id="sur">${ico('dice',16)} Surprise me</button></p></section><div class="row top"><input id="q" placeholder="${S.discreet?'Search':(matchMedia('(hover:none)').matches?'Search games':'Search games (press / )')}" autocomplete="off"><select id="so">${[['pop','Popular'],['az','A to Z'],['za','Z to A'],['shuf','Shuffle']].map(o=>`<option value="${o[0]}"${S.sort==o[0]?' selected':''}>${o[1]}</option>`).join('')}</select></div><div class="chips">${CH.map(c=>`<button data-c="${c[0]}" class="${c[0]==chip?'on':''}">${c[1]}</button>`).join('')}</div><section id="cw" hidden><h2 class="sh">Continue playing</h2><div class="strip" id="st"></div></section><p class="rc" id="rc"></p><div class="grid" id="g"></div><button class="btn" id="more">Show more</button>`;
 if(q0!=null){const i=$('#q');i.value=q0;i.focus()}
 v.querySelector('.hero').insertAdjacentHTML('afterbegin','<button class="surp bk" id="bk">'+ico('chevl',14)+' All games</button>');$('#bk').onclick=()=>go('games');
@@ -87,7 +87,7 @@ const all=ALL(),rk=new Map(all.map(g=>[g.id,Math.random()])),real=all.filter(g=>
 if($('#rot'))RT=S.calm?($('#rot').textContent='games',0):rotText($('#rot'),['puzzles','racers','shooters','idle games','arcade hits','3D worlds'],2200);
 countUp($('#cnt'),real.length);
 let list=[],rendered=0;
-const ok=g=>!(S.mobonly&&g.id.startsWith('pg:')&&!g.m)&&(chip=='All'||(chip=='Favorites'?S.fav.includes(g.id):chip=='Recent'?S.recent.includes(g.id):chip=='Mobile'?!!g.m:chip=='Classics'?!g.id.startsWith('pg:'):(g.g||'').split(',').includes(chip)));
+const ok=g=>!(S.mobonly&&g.id.startsWith('pg:')&&!g.m)&&(chip=='All'||(chip=='Favorites'?S.fav.includes(g.id):chip=='Recent'?S.recent.includes(g.id):chip=='Mobile'?!!g.m:chip=='GM'?g.id.startsWith('gm:'):chip=='Classics'?!/^(pg|gm):/.test(g.id):(g.g||'').split(',').includes(chip)));
 
 const more=()=>{const g=$('#g');list.slice(rendered,shown).forEach((x,k)=>{const c=card(x);c.style.animationDelay=Math.min(k,28)*18+'ms';g.append(c)});rendered=Math.min(shown,list.length);$('#more').hidden=rendered>=list.length;$('#more').textContent='Show more ('+(list.length-rendered)+' left)'};
 const fill=()=>{while(!$('#more').hidden&&$('#more').getBoundingClientRect().top<innerHeight+800){shown+=PER();more()}};
@@ -110,7 +110,7 @@ IO=new IntersectionObserver(es=>{if(es[0].isIntersecting)fill()},{rootMargin:'80
 shown=PER();build()}
 function play(g){const st=$('#stage');$('#player').hidden=false;$('#player').classList.remove('min');startEarn();startSession(g);$('#pt').textContent=S.discreet?(S.ctitle||(CL[S.cloak]||CL.Documents)[0]):g.name;if(!g.ext){S.recent=[g.id,...S.recent.filter(x=>x!=g.id)].slice(0,12);save()}$('#pl').onclick=()=>{const u=(!g.ext&&API&&/^[A-Za-z0-9:_.\-]{1,120}$/.test(g.id))?API.replace(/\/+$/,'')+'/g?id='+encodeURIComponent(g.id)+'&n='+encodeURIComponent(g.name)+(g.img?'&i='+encodeURIComponent(g.img.split('?')[0]):''):location.href.split('#')[0]+'#'+encodeURIComponent(g.id);navigator.clipboard&&navigator.clipboard.writeText(u);toast('Link copied')};st.innerHTML='';
 $('#pb').onclick=()=>fbDlg({t:'compat',game:g.name});$('#po').hidden=!g.url;$('#po').onclick=()=>open(g.url,'_blank','noopener');
-if(g.url){const f=mk('iframe');f.src=g.url;f.allow='fullscreen;autoplay;gamepad;accelerometer;gyroscope;clipboard-write;encrypted-media;picture-in-picture';f.setAttribute('sandbox','allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals allow-popups-to-escape-sandbox allow-presentation allow-orientation-lock');st.append(f)}
+if(g.url){const f=mk('iframe');f.src=g.url;f.allow='fullscreen;autoplay;gamepad;accelerometer;gyroscope;clipboard-write;encrypted-media;picture-in-picture';f.setAttribute('sandbox',/^gm:/.test(g.id)?'allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-modals allow-presentation allow-orientation-lock':'allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals allow-popups-to-escape-sandbox allow-presentation allow-orientation-lock');st.append(f)}
 else stop=g.run(st,s=>{if(s>(S.best[g.id]||0)){S.best[g.id]=s;save()}})}
 function quit(){endSession();clearInterval(EI);stop&&stop();stop=null;$('#stage').innerHTML='';$('#player').hidden=true;if(!$('#q')&&$('#nav .on').dataset.p=='games')games()}
 
@@ -318,14 +318,15 @@ let st;addEventListener('scroll',()=>{document.body.classList.add('scrolling');c
 let ly=0;addEventListener('scroll',()=>{const y=scrollY,hd=$('header');if(y>90&&y>ly+6)hd.classList.add('hide');else if(y<ly-6||y<=90)hd.classList.remove('hide');ly=y},{passive:true});
 let lc=0,lt;$('#logo').onclick=()=>{clearTimeout(lt);if(++lc>=5){lc=0;go('corner')}else lt=setTimeout(()=>lc=0,1500)};
 /* Home rails and forums */
-try{sessionStorage.removeItem('nd_gm')}catch(e){}
+let GM=[];
 let FCH='general',FT,FLAST='',PM=[],LM=[];
-const ALL=()=>[...S.custom.map(c=>({id:c.url,name:c.name,i:'globe',d:'Custom game',url:c.url})),...PG,...GAMES],
+const ALL=()=>[...S.custom.map(c=>({id:c.url,name:c.name,i:'globe',d:'Custom game',url:c.url})),...PG,...GM,...GAMES],
 cap=s=>s.replace(/-/g,' ').replace(/^./,c=>c.toUpperCase());
-function fillHome(){if(!$('#r1'))return;const a=ALL().filter(g=>!g.ext),pg=a.filter(g=>g.id.startsWith('pg:'));
-const pop=[],L=[pg.length?pg:a];for(let i=0;pop.length<30&&i<40;i++)L.forEach(l=>l[i]&&pop.length<30&&pop.push(l[i]));
+function fillHome(){if(!$('#r1'))return;const a=ALL().filter(g=>!g.ext),pg=a.filter(g=>g.id.startsWith('pg:')),gm=a.filter(g=>g.id.startsWith('gm:'));
+const pop=[],L=[pg.length?pg:a,gm];for(let i=0;pop.length<30&&i<40;i++)L.forEach(l=>l[i]&&pop.length<30&&pop.push(l[i]));
 const rec=S.cont?S.recent.map(id=>a.find(g=>g.id==id)).filter(Boolean):[],R=[['Popular',pop,'All',1,a.length]];
 if(rec.length)R.push(['Continue playing',rec.slice(0,20),'Recent',0,rec.length]);
+if(gm.length)R.push(['Fresh from GameMonetize',gm.slice(0,30),'GM',0,gm.length]);
 const gc={};a.forEach(g=>(g.g||'').split(',').forEach(x=>x&&x!='mobile'&&(gc[x]=(gc[x]||0)+1)));
 const gl=Object.keys(gc).filter(x=>gc[x]>=10).sort((x,y)=>gc[y]-gc[x]);gl.slice(0,10).forEach(x=>{const l=a.filter(g=>(g.g||'').split(',').includes(x));R.push([cap(x),l.slice(0,30),x,0,l.length])});
 $('#cnt').textContent=a.length.toLocaleString();
@@ -342,7 +343,7 @@ function home(){chip='All';const v=$('#view');clearInterval(RT);IO&&IO.disconnec
 v.innerHTML=`<section class="hh"><div><h1>${S.discreet?'Files':'Play <button class="rot" id="rot" title="Open this genre"></button>'}</h1><p class="sub"><b id="cnt">0</b> free games, nothing to install</p></div><div class="hs"><input id="q" type="search" placeholder="${S.discreet?'Search':(matchMedia('(hover:none)').matches?'Search games':'Search games (press / )')}" autocomplete="off"><button class="surp" id="sur">${ico('dice',16)} Surprise me</button></div></section><aside class="adv sb" aria-label="Advertising"><b>Ads available</b><span>Contact <a href="mailto:zzearyd@gmail.com">zzearyd@gmail.com</a> for more info</span></aside><div id="gotd"></div><div id="r1"></div><div id="r2"></div>`;
 $('#q').oninput=e=>{if(e.target.value.trim())games('All',e.target.value)};
 $('#sur').onclick=()=>{const p=ALL().filter(g=>!g.ext);play(p[Math.random()*p.length|0])};
-fillHome()}let TT='';
+fillHome();GMP.then(()=>{if($('#r1'))fillHome()})}let TT='';
 async function trades(){const v=$('#view');
 if(!ME){v.innerHTML='<h1>Trades</h1><div class="panel"><p>Log in to trade with other players.</p><button class="btn" id="gl">Log in or sign up</button></div>';$('#gl').onclick=()=>go('account');return}
 v.innerHTML='<h1>Trades</h1><p class="sub">Loading…</p>';let IT,L;
@@ -391,6 +392,25 @@ v.querySelector('.fch').onclick=e=>{const b=e.target.closest('[data-c]');if(b){F
 clearInterval(FT);FT=setInterval(()=>document.visibilityState=='visible'&&load(),8000);load(1)}
 
 {const f=$('#fbl');if(f)f.onclick=e=>{e.preventDefault();fbDlg()}}
+const GMURL='https://gamemonetize.com/feed.php?format=0&page=1',
+gslug=x=>String(x||'').toLowerCase().trim().replace(/\s+/g,'-'),
+gent=t=>(/[&<]/.test(t)?(new DOMParser().parseFromString(String(t||''),'text/html').documentElement.textContent||''):String(t||'')).replace(/\s+/g,' ').trim(),
+GOK=new Set(['simulation','strategy','3d','2d','halloween','io','driving','car','fighting','physics','multiplayer','platform','sports','racing','puzzle','shooter','shooting','adventure','action','arcade']),
+gmMap=a=>(Array.isArray(a)?a:a&&(a.data||a.games||a.items)||[]).filter(x=>x&&x.id&&x.title&&/^https:\/\/html5\.gamemonetize\.(co|com)\/[A-Za-z0-9_\/.\-]+$/.test(x.url||'')).map(x=>({id:'gm:'+x.id,name:gent(x.title),g:[...new Set([gslug(x.category),...String(x.tags||'').split(',').map(gslug).filter(t=>GOK.has(t))].filter(Boolean))].slice(0,3).join(','),d:gent(x.category)||'Arcade',img:/^https:\/\/img\.gamemonetize\.com\/[A-Za-z0-9_\/.\-]+$/.test(x.thumb||'')?x.thumb:'',m:1,url:x.url})).filter(g=>g.name);
+HX=/^[A-Za-z0-9_-]{8,64}$/,GMKEY='nd_gm2',GMMAXP=60,
+gmC=a=>(Array.isArray(a)?a:[]).filter(x=>Array.isArray(x)&&x[0]&&x[1]&&HX.test(x[4]||'')).map(x=>({id:'gm:'+x[0],name:gent(x[1]),g:[...new Set([gslug(x[2]),...String(x[3]||'').split(',')].filter(Boolean))].slice(0,3).join(','),d:gent(x[2])||'Arcade',img:x[5]===0?'':HX.test(x[5]||x[4])?'https://img.gamemonetize.com/'+(x[5]||x[4])+'/512x384.jpg':'',m:1,url:'https://html5.gamemonetize.co/'+x[4]+'/'})).filter(g=>g.name);
+async function loadGM(){try{sessionStorage.removeItem('nd_gm')}catch(e){}
+try{const c=JSON.parse(localStorage[GMKEY]||'null');if(c&&Date.now()-c.t<(c.ok?216e5:6e5)){GM=gmC(c.d);return}}catch(e){}
+const base=API.replace(/\/+$/,'')+'/feed?page=',one=async p=>{try{const r=await fetch(base+p);return r.ok?await r.json():null}catch(e){return null}};
+const f=await one(1);
+if(!Array.isArray(f)){try{GM=gmMap(await(await fetch(GMURL)).json())}catch(e){}return}
+let raw=f.slice();GM=gmC(raw);
+if(f.length)(async()=>{let p=2,end=false,err=false;
+while(!end&&!err&&p<=GMMAXP){const res=await Promise.all([0,1,2,3].filter(i=>p+i<=GMMAXP).map(i=>one(p+i)));for(const r of res){if(!Array.isArray(r)){err=true;break}if(!r.length){end=true;break}raw=raw.concat(r)}p+=4}
+const seen=new Set();raw=raw.filter(x=>x&&!seen.has(x[0])&&seen.add(x[0]));GM=gmC(raw);
+try{localStorage[GMKEY]=JSON.stringify({t:Date.now(),ok:!err,d:raw})}catch(e){}
+if($('#r1'))fillHome();dispatchEvent(new Event('gmdone'))})();}
+const GMP=loadGM().then(()=>dispatchEvent(new Event('gmdone')));
 let lp=0,bdN=0;const setBd=(n,quiet)=>{const b=document.querySelector('#nav [data-p=shop]');if(!b)return;n?b.dataset.bd=n:delete b.dataset.bd;if(n>bdN&&!quiet)toast('You have '+n+' trade offer'+(n>1?'s':'')+' waiting');bdN=n};
 const ping=()=>{if(ME&&document.visibilityState=='visible'&&Date.now()-lp>24e4){lp=Date.now();api('/ping',{}).then(j=>setBd(j.tr||0)).catch(()=>{})}};setInterval(ping,6e4);addEventListener('visibilitychange',ping);ping();
 const pill=document.createElement('i');pill.className='pill';$('#nav').prepend(pill);
@@ -404,4 +424,4 @@ function achPanel(){const g=Array.isArray(S.ach)?S.ach:[];return`<div class="pan
 function dailyDot(){const b=document.querySelector('#nav [data-p=account]');if(b){ME&&ME.canDaily?b.dataset.bd='!':delete b.dataset.bd}}
 setInterval(checkAch,2e4);
 apply();go('games');
-const hid=decodeURIComponent(location.hash.slice(1));if(hid){const dl=()=>{const g0=ALL().find(x=>x.id==hid);if(g0&&!g0.ext&&$('#player').hidden)play(g0)};dl()}
+const hid=decodeURIComponent(location.hash.slice(1));if(hid){const dl=()=>{const g0=ALL().find(x=>x.id==hid);if(g0&&!g0.ext&&$('#player').hidden)play(g0)};dl();if(hid.startsWith('gm:'))addEventListener('gmdone',dl)}

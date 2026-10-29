@@ -574,3 +574,26 @@ nav button.on,nav button.on:hover{background:none;color:var(--bg)}
 #cookie p{flex:1}
 @media(max-width:640px){#cookie{bottom:calc(78px + env(safe-area-inset-bottom));flex-direction:column;align-items:stretch;gap:12px}#cookie .btn{width:100%}}
 @media(prefers-reduced-motion:reduce){#cookie,#cookie.out{animation:none}}
+
+/* FAQ page */
+.faq .jump{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
+.faq .jump a{border:1px solid var(--ln);border-radius:99px;padding:6px 14px;font-size:14px;text-decoration:none;color:var(--tx)}
+.faq .jump a:hover{border-color:var(--a)}
+.faq h2{margin:34px 0 12px;scroll-margin-top:84px}
+.faq details{border:1px solid var(--ln);border-radius:14px;background:var(--card);margin:0 0 10px;padding:0 18px;scroll-margin-top:84px}
+.faq details:target,.faq details[open]{border-color:color-mix(in srgb,var(--a) 55%,var(--ln))}
+.faq summary{cursor:pointer;font-weight:600;padding:15px 30px 15px 0;list-style:none;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'';position:absolute;right:4px;top:50%;width:8px;height:8px;border-right:2px solid var(--mu);border-bottom:2px solid var(--mu);transform:translateY(-70%) rotate(45deg);transition:transform .25s}
+.faq details[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+.faq details>div{padding:0 0 6px;color:var(--mu);line-height:1.7}
+.faq details p{margin:0 0 10px}
+.faq kbd{border:1px solid var(--ln);border-bottom-width:2px;border-radius:6px;padding:1px 7px;font:13px system-ui;color:var(--tx)}
+@media(prefers-reduced-motion:reduce){.faq summary::after{transition:none}}
+
+/* ad spots: labelled, spaced away from buttons, never in dialogs or the game player */
+.adbox{margin:28px 0;text-align:center;clear:both}
+.adbox small{display:block;color:var(--mu);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.adbox ins{display:block;min-height:90px;overflow:hidden}
+.adbox:has(ins[data-ad-status="unfilled"]){display:none}
+.d .adbox{display:none}

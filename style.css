@@ -597,3 +597,93 @@ nav button.on,nav button.on:hover{background:none;color:var(--bg)}
 .adbox ins{display:block;min-height:90px;overflow:hidden}
 .adbox:has(ins[data-ad-status="unfilled"]){display:none}
 .d .adbox{display:none}
+
+/* chat rooms: one big community server, Discord-style */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.av.xl{width:40px;height:40px;font-size:18px}.av.xl.em{font-size:22px}
+.chat{display:grid;grid-template-columns:68px 244px minmax(0,1fr) 236px;height:calc(100dvh - 140px);min-height:520px;max-height:880px;border:1px solid var(--ln);border-radius:18px;overflow:hidden;background:var(--bg)}
+.crail{background:color-mix(in srgb,var(--bg) 78%,#000);display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 0}
+.srv{position:relative;width:46px;height:46px;border-radius:50%;border:0;display:grid;place-items:center;background:var(--card);color:var(--tx);font:700 19px var(--f);cursor:pointer;text-decoration:none;transition:border-radius .2s,background .2s,color .2s}
+.srv:hover,.srv.on{border-radius:15px;background:var(--a);color:#fff}
+.srv.on::before{content:'';position:absolute;left:-11px;top:6px;width:4px;height:34px;border-radius:0 4px 4px 0;background:var(--tx)}
+.srv.dsc-srv{color:#5865f2}.srv.dsc-srv:hover{background:#5865f2;color:#fff}
+.rdiv{width:30px;height:2px;border-radius:2px;background:var(--ln)}
+.cside{background:var(--card);display:flex;flex-direction:column;min-width:0}
+.chead{padding:14px 16px;border-bottom:1px solid var(--ln);display:flex;flex-direction:column;gap:1px}
+.chead b{font-size:16px}.chead small{color:var(--mu)}
+.ccat{padding:16px 14px 6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.chl{display:flex;flex-direction:column;gap:2px;padding:0 8px;flex:1;overflow:auto}
+.chl button{display:flex;align-items:center;gap:8px;background:none;border:0;border-radius:6px;padding:7px 10px;color:var(--mu);cursor:pointer;font:500 15px system-ui;text-align:left}
+.chl button:hover{background:color-mix(in srgb,var(--tx) 8%,transparent);color:var(--tx)}
+.chl button.on{background:color-mix(in srgb,var(--tx) 14%,transparent);color:var(--tx)}
+.hash{font-size:20px;font-weight:500;opacity:.7;width:18px;display:inline-grid;place-items:center}
+.cbot{padding:10px;border-top:1px solid var(--ln);display:flex;flex-direction:column;gap:10px;background:color-mix(in srgb,var(--bg) 90%,#000)}
+.dbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#5865f2;color:#fff!important;border-radius:10px;padding:9px 16px;font:600 14px system-ui;text-decoration:none!important;transition:background .2s,transform .15s}
+.dbtn:hover{background:#4752c4}.dbtn:active{transform:scale(.97)}.dbtn.full{width:100%}.dbtn .dsc{flex:none}
+.dbtn.mini{display:none}
+.cme{display:flex;align-items:center;gap:8px}.cme .av{margin:0;flex:none}
+.cme>div{flex:1;min-width:0;line-height:1.25}.cme b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cme small{color:var(--mu);font-size:12px}
+.cme button{background:none;border:0;color:var(--mu);cursor:pointer;padding:6px;border-radius:6px;display:grid;place-items:center}.cme button:hover{color:var(--tx);background:color-mix(in srgb,var(--tx) 8%,transparent)}
+.cmain{display:flex;flex-direction:column;min-width:0;position:relative;background:var(--bg)}
+.cbar{display:flex;align-items:center;gap:8px;padding:0 16px;height:48px;border-bottom:1px solid var(--ln);flex:none}
+.cbar b{font-size:16px}.vdiv{width:1px;height:20px;background:var(--ln);margin:0 6px;flex:none}
+.cbar small{color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.cbar .crules{margin-left:auto;font-size:13px;flex:none;color:var(--b)}
+.cmsgs{flex:1;overflow-y:auto;padding:4px 0 6px}
+.dwel{padding:22px 16px 10px}
+.dwel .dh2{width:64px;height:64px;border-radius:50%;background:color-mix(in srgb,var(--tx) 14%,transparent);display:grid;place-items:center;font:600 34px system-ui;margin-bottom:10px}
+.dwel h2{font:700 26px/1.2 system-ui;margin:0 0 4px}.dwel p{color:var(--mu);margin:0}
+.dm{display:grid;grid-template-columns:56px minmax(0,1fr);padding:2px 16px 2px 0;position:relative}
+.dm:not(.grp){margin-top:14px}
+.dm:hover{background:color-mix(in srgb,var(--tx) 5%,transparent)}
+.dav{padding-left:16px}.dav .av{margin:2px 0 0}
+.dts{display:none;color:var(--mu);font-size:11px;line-height:22px}.dm.grp:hover .dts{display:block}
+.dh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.dh small{color:var(--mu);font-size:12px}.dh .own{font-size:11px;padding:1px 7px;margin:0}
+.dbd p{margin:2px 0 0;line-height:1.45;overflow-wrap:anywhere;white-space:pre-wrap}
+.dm.mm{background:color-mix(in srgb,#f0b232 10%,transparent);box-shadow:inset 2px 0 #f0b232}
+.dm.tmpm{opacity:.55}.dm.tmpm .ma{display:none!important}
+.dm .ma{position:absolute;right:12px;top:-14px;display:none;background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:2px;opacity:1;margin:0}
+.dm:hover .ma,.dm .ma:focus-within{display:flex}
+.ccomp{display:flex;gap:10px;margin:0 16px 8px;padding:6px 6px 6px 16px;background:var(--card);border:1px solid var(--ln);border-radius:12px;align-items:center}
+.ccomp input{flex:1;border:0;background:none;box-shadow:none;outline:0;padding:8px 0;min-width:0}
+.ccomp .btn{padding:8px 18px}
+.cmain .fnew{bottom:74px}
+.cmem{background:var(--card);overflow-y:auto;border-left:1px solid var(--ln)}
+.mrow{display:flex;align-items:center;gap:8px;width:calc(100% - 16px);margin:0 8px;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;color:inherit;text-align:left;font:500 14px system-ui}
+.mrow:hover{background:color-mix(in srgb,var(--tx) 8%,transparent)}.mrow .av{margin:0;flex:none}.mrow small{margin-left:auto;color:var(--mu);font-size:11px}
+.rc1{color:#5b8def}.rc2{color:#2fb5a6}.rc3{color:#e5534b}.rc4{color:#e2b340}
+.hs .dbtn{white-space:nowrap}
+.d .dbtn,.d .dsc-srv{display:none}
+@media(hover:none){.dm .ma{display:flex;top:2px;right:6px;border:0;background:none;opacity:.5}}
+@media(max-width:1100px){.chat{grid-template-columns:68px 220px minmax(0,1fr)}.cmem{display:none}}
+@media(max-width:760px){
+.chat{display:flex;flex-direction:column;height:calc(100dvh - 160px);min-height:380px;border-radius:14px}
+.crail,.chead,.ccat,.cbot,.cmem,.cbar .vdiv,.cbar small{display:none}
+.cside{flex:none;border-bottom:1px solid var(--ln)}
+.chl{flex-direction:row;overflow-x:auto;padding:8px;flex:none;align-items:center;scrollbar-width:none}
+.chl button{flex:none;padding:6px 12px;border:1px solid var(--ln);border-radius:99px;font-size:14px}
+.dbtn.mini{display:inline-flex;flex:none;padding:7px 11px;border-radius:99px}
+.dm{grid-template-columns:52px minmax(0,1fr)}
+.cbar{height:42px}
+}
+@media(max-width:640px){.hs{flex-wrap:wrap}.hs .dbtn{flex:1 1 100%}}
+.cmain,.cmsgs,.cside,.cmem{min-height:0}
+@media(max-width:760px){.cmain{flex:1 1 0}}
+
+/* phone polish: one-line tab labels, tap-to-show message actions, compact welcome */
+#nav button{white-space:nowrap}
+@media(max-width:640px){#nav button{font-size:10.5px;padding-left:2px;padding-right:2px}}
+@media(max-width:380px){#nav button{font-size:10px}}
+@media(hover:none){.dm .ma{display:none}.dm.act .ma{display:flex;top:-12px;right:8px;background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:2px;opacity:1;z-index:2}.dm.act{background:color-mix(in srgb,var(--tx) 6%,transparent)}}
+@media(max-width:760px){.dwel{padding:12px 16px 4px}.dwel .dh2{display:none}.dwel h2{font-size:19px}.dwel p{font-size:13px}.dm:not(.grp){margin-top:10px}}
+@media(max-width:760px){.dbtn.mini{order:-1}}
+
+/* levels, chat emoji picker */
+.xpbar{height:10px;border-radius:99px;background:var(--ln);overflow:hidden;margin:2px 0 10px}
+.xpbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--a),var(--b));transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.emj{background:none;border:0;font:20px/1 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',system-ui,sans-serif;cursor:pointer;padding:4px 6px;border-radius:8px}
+.emj:hover{background:color-mix(in srgb,var(--tx) 10%,transparent)}
+.emp{position:absolute;right:16px;bottom:72px;width:min(330px,calc(100% - 32px));max-height:210px;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px;padding:8px;background:var(--card);border:1px solid var(--ln);border-radius:12px;box-shadow:0 10px 30px #0008;z-index:3}
+.emp[hidden]{display:none}
+.emp button{aspect-ratio:1;border:0;background:none;font:21px/1 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',system-ui,sans-serif;cursor:pointer;border-radius:8px}
+.emp button:hover{background:color-mix(in srgb,var(--tx) 12%,transparent)}

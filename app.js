@@ -334,12 +334,13 @@ const gc={};a.forEach(g=>(g.g||'').split(',').forEach(x=>x&&x!='mobile'&&(gc[x]=
 const gl=Object.keys(gc).filter(x=>gc[x]>=10).sort((x,y)=>gc[y]-gc[x]);gl.slice(0,10).forEach(x=>{const l=a.filter(g=>(g.g||'').split(',').includes(x));R.push([cap(x),l.slice(0,30),x,0,l.length])});
 $('#cnt').textContent=a.length.toLocaleString();
 {const c=(pg.length?pg:a).filter(g=>g.img),dt=new Date(),k=dt.getFullYear()*372+dt.getMonth()*31+dt.getDate(),g=c[(Math.imul(k,2654435761)>>>0)%(c.length||1)];
-if(g&&$('#gotd')){$('#gotd').innerHTML=`<div class="gotd"><img src="${esc(g.img)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()"><div><small>Game of the day</small><h2>${esc(g.name)}</h2><p>${esc(g.d||'')}</p><button class="btn" id="gpl">Play now</button></div></div>`;$('#gpl').onclick=()=>play(g)}}
+if(g&&$('#gotd')){$('#gotd').innerHTML=`<div class="gotd"><div class="gtx"><small>Game of the day</small><h2>${esc(g.name)}</h2><div class="gtags">${(g.g||g.d||'').split(',').filter(Boolean).slice(0,3).map(x=>`<span>${esc(cap(x))}</span>`).join('')}</div><button class="btn" id="gpl">${ico('gamepad',16)} Play now</button></div><div class="gim"><img src="${esc(g.img)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()"></div></div>`;$('#gpl').onclick=()=>play(g)}}
 const rt=$('#rot');if(rt&&gl.length){clearInterval(RT);const w=gl.slice(0,12);let i=Math.random()*w.length|0;
 const t=()=>{if(!document.body.contains(rt))return clearInterval(RT);const x=w[i++%w.length];rt.textContent=cap(x);rt.dataset.c=x;rt.classList.remove('in');void rt.offsetWidth;rt.classList.add('in')};
 t();if(!S.calm)RT=setInterval(t,2200);rt.onclick=()=>{chip=rt.dataset.c;games();scrollTo(0,0)}}
 const put=(el,rs)=>{el.innerHTML='';rs.forEach(r=>{const s=mk('section','rw'+(r[3]?' lg':''),`<div class="rh"><h2>${esc(r[0])}</h2><small>${r[4].toLocaleString()} games</small><button class="va">View all</button><span class="ar"><button aria-label="Scroll left">${ico('chevl',16)}</button><button aria-label="Scroll right">${ico('chevr',16)}</button></span></div><div class="rail"></div>`),rl=s.querySelector('.rail'),ab=s.querySelectorAll('.ar button');
 r[1].forEach(g=>rl.append(card(g)));s.querySelector('.va').onclick=()=>{chip=r[2];games();scrollTo(0,0)};
+const ed=()=>{rl.style.setProperty('--fl',rl.scrollLeft>8?'44px':'0px');rl.style.setProperty('--fr',rl.scrollLeft+rl.clientWidth>=rl.scrollWidth-8?'0px':'56px')};rl.addEventListener('scroll',ed,{passive:true});requestAnimationFrame(ed);
 ab[0].onclick=()=>rl.scrollBy({left:-rl.clientWidth*.8,behavior:'smooth'});ab[1].onclick=()=>rl.scrollBy({left:rl.clientWidth*.8,behavior:'smooth'});el.append(s)})};
 put($('#r1'),R.slice(0,2));put($('#r2'),R.slice(2))}
 function home(){chip='All';const v=$('#view');clearInterval(RT);IO&&IO.disconnect();
@@ -467,6 +468,7 @@ lvlInfo=()=>{const xp=Math.floor((S.time||0)/30)+25*Object.keys(S.plays||{}).len
 function checkLvl(){const i=lvlInfo();if(S.lvl==null){S.lvl=i.lv;save();return}if(i.lv>S.lvl){S.lvl=i.lv;save();toast('Level up! You’re now level '+i.lv+' · '+lvTitle(i.lv))}}
 function lvlPanel(){const i=lvlInfo();return`<div class="panel"><h3>Level ${i.lv} <small>${lvTitle(i.lv)}</small></h3><div class="xpbar"><i style="width:${i.pct}%"></i></div><small>${i.xp-i.lo} of ${i.hi-i.lo} XP to level ${i.lv+1}. Earn XP by playing, trying new games and unlocking achievements.</small></div>`}
 function dailyDot(){const b=document.querySelector('#nav [data-p=account]');if(b){ME&&ME.canDaily?b.dataset.bd='!':delete b.dataset.bd}}
+document.addEventListener('load',e=>{const t=e.target;if(t&&t.tagName=='IMG')t.classList.add('ok')},true);
 setInterval(()=>{checkAch();checkLvl()},2e4);
 function showCookie(force){const K='nd_cookie',V='1';try{if(!force&&localStorage[K]==V)return}catch(e){}
 if($('#cookie'))return;const b=document.createElement('div');b.id='cookie';b.setAttribute('role','region');b.setAttribute('aria-label','Cookie notice');

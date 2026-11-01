@@ -713,3 +713,38 @@ nav button.on,nav button.on:hover{background:none;color:var(--bg)}
 @media(prefers-reduced-motion:reduce){.thumb img,.rail .card{transition:none}}
 
 .gotd .gim{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 46%);mask-image:linear-gradient(90deg,transparent 0,#000 46%)}
+
+/* profile cards and banners (presets only) */
+.pban{height:96px;background:linear-gradient(120deg,#5b3df5,#2fd6f5)}
+.pban.slim{height:56px;border-radius:12px;margin-bottom:12px}
+.pcardx{border:1px solid var(--ln);border-radius:18px;overflow:hidden;background:var(--card);margin-bottom:14px}
+.pcardx .pin{display:flex;gap:16px;align-items:flex-end;padding:0 18px 16px;margin-top:-38px}
+.pcardx .pin .av.lg{border:4px solid var(--card);flex:none}
+.pcardx .pin h1{margin:0 0 8px}
+.pcardx.mini .pban{height:64px}.pcardx.mini .pin{margin-top:-18px;align-items:center;padding-bottom:12px}.pcardx.mini .av{border:3px solid var(--card)}
+.dlg.pcard{padding:0;overflow:hidden;width:min(360px,calc(100vw - 32px))}
+.pcard .pbd{padding:0 18px 18px}
+.pcard .pav{margin-top:-40px;margin-bottom:6px}.pcard .pav .av{border:4px solid var(--bg)}
+.pcard h3{margin:0 0 4px}.pcard .sub{margin:2px 0}.pcard .row{margin-top:14px}
+.dav[data-u]{cursor:pointer}.mrow,.nm{cursor:pointer}
+.bngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin:12px 0 8px;max-height:230px;overflow:auto}
+.bngrid button{background:none;border:2px solid transparent;border-radius:12px;padding:4px;cursor:pointer;color:var(--tx);font-size:12px}
+.bngrid button i{display:grid;place-items:center;height:46px;border-radius:8px;margin-bottom:4px;color:#fff}
+.bngrid button.on{border-color:var(--a)}
+.bngrid button[data-lock] i{filter:grayscale(.6) brightness(.55)}
+
+/* featured row: Game of the Day + Nathan's Choice */
+.feat{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:16px;margin:0 0 28px;align-items:stretch}
+.feat .gotd{margin:0;height:100%}
+.feat:has(#nchoice:empty){grid-template-columns:1fr}
+.nchoice{height:100%;display:flex;flex-direction:column;border:1px solid color-mix(in srgb,#f0b232 45%,var(--ln));border-radius:20px;overflow:hidden;background:linear-gradient(160deg,color-mix(in srgb,#f0b232 12%,var(--card)),var(--card) 55%)}
+.nchoice .nci{background:#fff;cursor:pointer;aspect-ratio:16/10;overflow:hidden}
+.nchoice .nci img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.nchoice:hover .nci img{transform:scale(1.04)}
+.nchoice .nct{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px;flex:1}
+.nchoice small{display:inline-flex;align-items:center;gap:6px;color:#f0b232;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.nchoice h3{margin:0;font:600 16px/1.25 var(--f)}
+.nchoice p{margin:0 0 10px;color:var(--mu);font-size:13px}
+.nchoice .btn{margin-top:auto;align-self:flex-start}
+@media(max-width:900px){.feat{grid-template-columns:1fr;gap:12px}.nchoice{flex-direction:row}.nchoice .nci{width:42%;aspect-ratio:auto;flex:none}.nchoice .nct{justify-content:center}}
+.d .nchoice{display:none}

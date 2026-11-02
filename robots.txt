@@ -3,4 +3,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /pbss.html
 Sitemap: https://nullden.com/sitemap.xml

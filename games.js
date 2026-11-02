@@ -21,7 +21,7 @@ const GAMES=[
 {id:'nb',name:'Night Bike',d:'Jump the traffic at night',url:'https://nightbike.mattjennin.gs/'},
 {id:'bb',name:'BananaBread',d:'3D first-person shooter',url:'https://kripken.github.io/BananaBread/cube2/bb.html'},
 {id:'city',name:'3d.city',d:'City-building sandbox',url:'https://lo-th.github.io/3d.city/index.html'},
-{id:'nc',name:'Penguin Ball Squisher Simulator',d:'Nathan’s Choice',img:'nathans-choice.png',url:'https://html-classic.itch.zone/html/18660349/index.html?v=1785776420'},
+{id:'nc',name:'Penguin Ball Squisher Simulator',d:'Nathan’s Choice',img:'nathans-choice.png',url:'pbss.html'},
 {id:'x1',name:'itch.io',d:'Free browser games · new tab',i:'ext',url:'https://itch.io/games/html5/free',ext:1},
 {id:'x2',name:'CrazyGames',d:'Popular games · new tab',i:'ext',url:'https://www.crazygames.com',ext:1},
 {id:'x3',name:'Newgrounds',d:'Classic web games · new tab',i:'ext',url:'https://www.newgrounds.com/games',ext:1}];
